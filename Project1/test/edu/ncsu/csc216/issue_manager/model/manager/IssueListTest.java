@@ -4,10 +4,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class IssueListTest {
-
+/**
+ * The IssueListTest class
+ * @author Louis Ton
+ */
+public class IssueListTest {
+	
+	/**
+	 * Test to be implemented
+	 */
 	@Test
-	void test() {
+	public void test() {
 		fail("Not yet implemented");
 	}
 

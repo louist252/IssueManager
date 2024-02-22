@@ -4,10 +4,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class IssueReaderTest {
+/**
+ * The IssureReadTest class
+ * @author Louis Ton
+ */
+public class IssueReaderTest {
 
+	/***
+	 * Test to be implement
+	 */
 	@Test
-	void test() {
+	public void test() {
 		fail("Not yet implemented");
 	}
 

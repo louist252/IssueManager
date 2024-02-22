@@ -8,12 +8,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 /**
- * 
+ * The CommandTest class
+ * @author Louis Ton
  */
-class CommandTest {
-
+public class CommandTest {
+	
+	/**
+	 * Test to be impletemented
+	 */
 	@Test
-	void test() {
+	public void test() {
 		fail("Not yet implemented");
 	}
 

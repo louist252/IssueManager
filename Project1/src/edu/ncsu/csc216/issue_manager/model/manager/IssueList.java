@@ -1,6 +1,7 @@
 package edu.ncsu.csc216.issue_manager.model.manager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.ncsu.csc216.issue_manager.model.command.Command;
 import edu.ncsu.csc216.issue_manager.model.issue.Issue;
@@ -36,7 +37,7 @@ public class IssueList {
 	 * Adding a collection of issue
 	 * @param issues the list of issues provided
 	 */
-	public void addIssues(ArrayList<Issue> issues) {
+	public void addIssues(List<Issue> issues) {
 		
 	}
 	
@@ -58,10 +59,10 @@ public class IssueList {
 	
 	/**
 	 * Gets the issues by type
-	 * @param issues the list of issues provided
+	 * @param issueType the type of issue
 	 * @return the list of issues
 	 */
-	public ArrayList<Issue> getIssuesByType(ArrayList<Issue> issues) {
+	public List<Issue> getIssuesByType(String issueType) {
 		return null;
 	}
 	
