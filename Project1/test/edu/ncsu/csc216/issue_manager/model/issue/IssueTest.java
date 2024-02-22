@@ -1,16 +1,10 @@
-/**
- * 
- */
-package edu.ncsu.csc216.issue_manager.model.command;
+package edu.ncsu.csc216.issue_manager.model.issue;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-/**
- * 
- */
-class CommandTest {
+class IssueTest {
 
 	@Test
 	void test() {
