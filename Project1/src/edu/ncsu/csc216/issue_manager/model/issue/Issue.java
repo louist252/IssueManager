@@ -111,7 +111,7 @@ public class Issue {
 	 * @param state the state to set
 	 */
 	private void setState(String state) {
-		// This code is left blank for future implementation
+		//To implement
 		
 	}
 	
