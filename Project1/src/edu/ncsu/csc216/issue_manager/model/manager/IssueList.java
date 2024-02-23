@@ -38,7 +38,7 @@ public class IssueList {
 	 * @param issues the list of issues provided
 	 */
 	public void addIssues(ArrayList<Issue> issues) {
-		
+		//T
 	}
 	
 	/**

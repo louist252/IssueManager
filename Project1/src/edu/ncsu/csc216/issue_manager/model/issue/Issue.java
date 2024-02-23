@@ -111,7 +111,7 @@ public class Issue {
 	 * @param state the state to set
 	 */
 	private void setState(String state) {
-		//To implement
+		//To be implemented
 		
 	}
 	
@@ -120,7 +120,7 @@ public class Issue {
 	 * @param issueType the issueType to set
 	 */
 	private void setIssueType (String issueType) {
-		
+		//To be implemented
 	}
 
 	/**
@@ -152,7 +152,7 @@ public class Issue {
 	 * @param resolution the resolution to set
 	 */
 	private void setResolution(String resolution) {
-		
+		//To be implemented
 	}
 
 	/**
@@ -249,7 +249,7 @@ public class Issue {
 	 * @param note the note to add
 	 */
 	private void addNote(String note) {
-		// Left blank for future implementation
+		//To be implemented
 	}
 	
 	/**
@@ -257,7 +257,7 @@ public class Issue {
 	 * @param command command to update
 	 */
 	public void update (Command command) {
-		
+		//To be implemeted
 	}
 	
 	
