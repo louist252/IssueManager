@@ -3,6 +3,7 @@ package edu.ncsu.csc216.issue_manager.model.issue;
 import java.util.ArrayList;
 
 import edu.ncsu.csc216.issue_manager.model.command.Command;
+import edu.ncsu.csc216.issue_manager.model.command.Command.Resolution;
 
 /**
  * The Issue class
@@ -20,7 +21,7 @@ public class Issue {
 	public static final String I_BUG = "Bug";
 	
 	/** A constant string for the new state’s name with the value “New” */
-	public static final String NEW_NAME = "Name";
+	public static final String NEW_NAME = "New";
 	
 	/** A constant string for the working state’s name with the value “Working” */
 	public static final String WORKING_NAME = "Working";
@@ -48,10 +49,35 @@ public class Issue {
 	
 	/** An ArrayList of notes */
 	private ArrayList<String> notes = new ArrayList<String>();
+	
+	/** An issueType */
+	private IssueType issueType;
+	
+	/** An issueState */
+	private IssueState state;
+	
+	/** A resolution */
+	private Resolution resolution;
+	
+	/** Final instance of NewState class */
+	private final IssueState newState = new NewState();
+	
+	/** Final instance of WorkingState class */
+	private final IssueState workingState = new WorkingState();
+	
+	/** Final instance of ConfirmedState class */
+	private final IssueState confirmedState = new ConfirmedState();
+	
+	/** Final instance of VerifyingState class */
+	private final IssueState verifyingState = new VerifyingState();
+	
+	/** Final instance of ClosedState class */
+	private final IssueState closedState = new ClosedState();
+
 
 	/**
 	 * Constructs a Issue from the provided IssueType, summary, and note. If any parameter is null or  
-	 * or string is empty or id less than 1, IllegalArgumentException is thrown
+	 * string is empty or id less than 1, IllegalArgumentException is thrown
 	 * @param id the id of issue
 	 * @param issueType the type of issue
 	 * @param summary the summary
@@ -71,12 +97,16 @@ public class Issue {
 			throw new IllegalArgumentException("Issue cannot be created");
 		}
 		setIssueId(id);
+		setSummary(summary);
+		this.issueType = issueType;
+		
 		
 		
 	}
 	
 	/**
-	 * Construct a Issue from all fields
+	 * Construct a Issue from all fields. If any parameter is null or  
+	 * string is empty or id less than 1, IllegalArgumentException is thrown
 	 * @param id the id of issue
 	 * @param state the state of issue
 	 * @param issueType the type of issue
@@ -85,9 +115,38 @@ public class Issue {
 	 * @param confirmed confirmed status
 	 * @param resolution the resolution
 	 * @param notes the notes
+	 * @throws IllegalArgumentException if parameter is invalid
 	 */
 	public Issue(int id, String state, String issueType, String summary, String owner, 
 			boolean confirmed, String resolution, ArrayList<String> notes) {
+		if ( id < 1) {
+			throw new IllegalArgumentException("Issue cannot be created");
+		}
+		
+		if (state == null || state.length() == 0 ) {
+			throw new IllegalArgumentException("Issue cannot be created");
+		}
+		
+		if (issueType == null || issueType.length() == 0 ) {
+			throw new IllegalArgumentException("Issue cannot be created");
+		}
+		
+		if (summary == null || summary.length() == 0 ) {
+			throw new IllegalArgumentException("Issue cannot be created");
+		}
+		
+		if (owner == null || owner.length() == 0 ) {
+			throw new IllegalArgumentException("Issue cannot be created");
+		}
+		
+		if (resolution == null || resolution.length() == 0 ) {
+			throw new IllegalArgumentException("Issue cannot be created");
+		}
+		
+		if (notes == null) {
+			throw new IllegalArgumentException("Issue cannot be created");
+		}
+		
 		setIssueId(id);
 		setState(state);
 		setIssueType(issueType);
@@ -101,41 +160,91 @@ public class Issue {
 	/**
 	 * Sets the issueId
 	 * @param issueId the issueId to set
+	 * @throws IllegalArgumentException if issueId is less than 1
 	 */
 	private void setIssueId(int issueId) {
+		if (issueId < 1) {
+			throw new IllegalArgumentException("Issue cannot be created");
+		}
+		
 		this.issueId = issueId;
 	}
 	
 	/**
 	 * Sets the state
-	 * @param state the state to set
+	 * @param issueState the state to set
+	 * @throws IllegalArgumentException if issueState is null or empty
 	 */
-	private void setState(String state) {
-		//To be implemented
+	private void setState(String issueState) {
+		if (issueState == null || issueState.length() == 0 ) {
+			throw new IllegalArgumentException("Issue cannot be created");
+		}
 		
+		switch(issueState) {
+		case NEW_NAME:
+			state = newState;
+			break;
+		case WORKING_NAME:
+			state = workingState;
+			break;
+		case CONFIRMED_NAME:
+			state = confirmedState;
+			break;
+		case VERIFYING_NAME:
+			state = verifyingState;
+			break;
+		case CLOSED_NAME:
+			state = closedState;
+			break;
+		default:
+			break;
+		}
 	}
 	
 	/**
 	 * Sets the issueType
-	 * @param issueType the issueType to set
+	 * @param type the type to set
+	 * @throws IllegalArgumentException if type is null or empty
 	 */
-	private void setIssueType (String issueType) {
-		//To be implemented
+	private void setIssueType (String type) {
+		if (type == null || type.length() == 0 ) {
+			throw new IllegalArgumentException("Issue cannot be created");
+		}
+		
+		switch (type) {
+		case I_ENHANCEMENT:
+			issueType = IssueType.ENHANCEMENT;
+			break;
+		case I_BUG:
+			issueType = IssueType.BUG;
+			break;
+		default:
+			break;
+		}
 	}
 
 	/**
 	 * Sets the summary
 	 * @param summary the summary to set
+	 * @throws IllegalArgumentException if summary is null or empty
 	 */
 	private void setSummary(String summary) {
+		if (summary == null || summary.length() == 0 ) {
+			throw new IllegalArgumentException("Issue cannot be created");
+		}
+		
 		this.summary = summary;
 	}
 
 	/**
 	 * Sets the owner
 	 * @param owner the owner to set
+	 * @throws IllegalArgumentException if owner is null or empty
 	 */
 	private void setOwner(String owner) {
+		if (owner == null || owner.length() == 0 ) {
+			throw new IllegalArgumentException("Issue cannot be created");
+		}
 		this.owner = owner;
 	}
 
@@ -149,17 +258,41 @@ public class Issue {
 	
 	/**
 	 * Sets the resolution
-	 * @param resolution the resolution to set
+	 * @param r the resolution to set
+	 * @throws IllegalArgumentException if r is null or empty
 	 */
-	private void setResolution(String resolution) {
-		//To be implemented
+	private void setResolution(String r) {
+		if (r == null || r.length() == 0 ) {
+			throw new IllegalArgumentException("Issue cannot be created");
+		}
+		
+		switch(r) {
+		case Command.R_FIXED:
+			resolution = Resolution.FIXED;
+			break;
+		case Command.R_DUPLICATE:
+			resolution = Resolution.DUPLICATE;
+			break;
+		case Command.R_WONTFIX:
+			resolution = Resolution.WONTFIX;
+			break;
+		case Command.R_WORKSFORME:
+			resolution = Resolution.WORKSFORME;
+			break;
+		default:
+			break;
+		}
 	}
 
 	/**
 	 * sets the notes
 	 * @param notes the notes to set
+	 * @throws IllegalArgumentException if notes is null
 	 */
 	private void setNotes(ArrayList<String> notes) {
+		if (notes == null) {
+			throw new IllegalArgumentException("Issue cannot be created");
+		}
 		this.notes = notes;
 	}
 
@@ -176,7 +309,20 @@ public class Issue {
 	 * @return the stateName
 	 */
 	public String getStateName() {
-		return null;
+		String stateName = null;
+		if (state == newState) {
+			stateName = NEW_NAME;
+		} else if (state == workingState) {
+			stateName = WORKING_NAME;
+		} else if (state == confirmedState) {
+			stateName = CONFIRMED_NAME;
+		} else if (state == verifyingState) {
+			stateName = VERIFYING_NAME;
+		} else if (state == closedState) {
+			stateName = CLOSED_NAME;
+		}
+
+		return stateName;
 	}
 	
 	/**
@@ -184,7 +330,18 @@ public class Issue {
 	 * @return the issueType
 	 */
 	public String getIssueType() {
-		return null;
+		String type = null;
+		switch(issueType) {
+		case BUG:
+			type = I_BUG;
+			break;
+		case ENHANCEMENT:
+			type =  I_ENHANCEMENT;
+			break;
+		default:
+			break;
+		}
+		return type;
 	}
 	
 	/**
@@ -192,7 +349,23 @@ public class Issue {
 	 * @return the resolution;
 	 */
 	public String getResolution() {
-		return null;
+		String r = null; 
+		switch(resolution) {
+		case FIXED:
+			r = Command.R_FIXED;
+			break;
+		case DUPLICATE:
+			r = Command.R_DUPLICATE;
+			break;
+		case WONTFIX:
+			r = Command.R_WONTFIX;
+			break;
+		case WORKSFORME:
+			r = Command.R_WORKSFORME;
+		default:
+			break;
+		}
+		return r;
 	}
 
 	/**
@@ -240,16 +413,22 @@ public class Issue {
 	 * @return the string
 	 */
 	public String toString() {
-		return null;
+		return "* " + getIssueId() + "," + getStateName() + "," + getIssueType() + "," + getSummary() + "," + 
+				getOwner() +  "," + isConfirmed() + "," + getResolution() + '\n';
 	}
 	
 	/**
 	 * The method ensures that the note is not null or an empty string.
 	 * If the note has contents, then the state name in square brackets is prepended to the note.
 	 * @param note the note to add
+	 * @throws IllegalArgumentException if note is null or empty
 	 */
 	private void addNote(String note) {
-		//To be implemented
+		if (note == null || note.length() == 0) {
+			throw new IllegalArgumentException("Invalid information.");
+		}
+		String noteWithState = "[" + getStateName() + "]" + note;
+		notes.add(noteWithState); 
 	}
 	
 	/**

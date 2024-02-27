@@ -29,6 +29,12 @@ public class Command {
 	/** The note*/
 	private String note;
 	
+	/** The commandValue */
+	private CommandValue c;
+	
+	/** The resolution */
+	private Resolution resolution;
+	
 	/**
 	 * The Command constructor. It has 4 parameters: CommandValue c, String ownerId, 
 	 * Resolution r, String note. If a Command has a null CommandValue parameter, or a
@@ -56,6 +62,8 @@ public class Command {
 		}
 		this.ownerId = ownerId;
 		this.note = note;
+		this.c = c;
+		resolution = r;
 	}
 
 	/**
@@ -63,7 +71,28 @@ public class Command {
 	 * @return the CommandValue
 	 */
 	public CommandValue getCommand() {
-		return null;
+		CommandValue command = null;
+		
+		switch(c) {
+		case ASSIGN:
+			command = CommandValue.ASSIGN;
+			break;
+		case CONFIRM:
+			command = CommandValue.CONFIRM;
+			break;
+		case RESOLVE:
+			command = CommandValue.RESOLVE;
+			break;
+		case VERIFY:
+			command = CommandValue.VERIFY;
+			break;
+		case REOPEN:
+			command = CommandValue.REOPEN;
+			break;
+		default:
+			break;
+		}
+		return command;
 	}
 
 	/**
@@ -79,7 +108,25 @@ public class Command {
 	 * @return the Resolutin
 	 */
 	public Resolution getResolution() {
-		return null;
+		Resolution r = null;
+		
+		switch(resolution) {
+		case FIXED:
+			r = Resolution.FIXED;
+			break;
+		case DUPLICATE:
+			r = Resolution.DUPLICATE;
+			break;
+		case WONTFIX:
+			r = Resolution.WONTFIX;
+			break;
+		case WORKSFORME:
+			r = Resolution.WORKSFORME;
+			break;
+		default:
+			break;
+		}
+		return r;
 	}
 
 	/**
