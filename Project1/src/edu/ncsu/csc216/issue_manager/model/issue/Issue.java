@@ -99,6 +99,7 @@ public class Issue {
 		setIssueId(id);
 		setSummary(summary);
 		this.issueType = issueType;
+		addNote(note);
 		
 		
 		
@@ -397,7 +398,12 @@ public class Issue {
 	 * @return the string of notes
 	 */
 	public String getNotesString() {
-		return null;
+		String noteString = null;
+		for (int i = 0; i < notes.size(); i++) {
+			noteString += "- " + notes.get(i) + '\n'; 
+		}
+		
+		return noteString;
 	}
 	
 	/**
@@ -414,7 +420,7 @@ public class Issue {
 	 */
 	public String toString() {
 		return "* " + getIssueId() + "," + getStateName() + "," + getIssueType() + "," + getSummary() + "," + 
-				getOwner() +  "," + isConfirmed() + "," + getResolution() + '\n';
+				getOwner() +  "," + isConfirmed() + "," + getResolution() + '\n' + getNotesString();
 	}
 	
 	/**
@@ -427,7 +433,7 @@ public class Issue {
 		if (note == null || note.length() == 0) {
 			throw new IllegalArgumentException("Invalid information.");
 		}
-		String noteWithState = "[" + getStateName() + "]" + note;
+		String noteWithState = "[" + getStateName() + "] " + note;
 		notes.add(noteWithState); 
 	}
 	
