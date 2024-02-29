@@ -58,7 +58,7 @@ public class IssueReaderTest {
 										+ "-[Working] Note 4\r\n"
 										+ "-[Closed] Note 6";		
 	
-	//Array to hold the expected results */
+	/**Array to hold the expected results */
 	private final String[] validIssues = {validIssue1, validIssue2, validIssue3, validIssue4, validIssue5};
 	
 	

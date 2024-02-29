@@ -142,7 +142,7 @@ public class IssueTest {
 		
 		Exception e10 = assertThrows(IllegalArgumentException.class,
 				() -> new Issue(ID, Issue.NEW_NAME, Issue.I_BUG, "", null, true, Command.R_FIXED, notes));
-		assertEquals("Issue cannot be created.", e7.getMessage(), "Incorrect exception thrown with null notes " + null);
+		assertEquals("Issue cannot be created.", e10.getMessage(), "Incorrect exception thrown with null notes " + null);
 		
 		
 	}

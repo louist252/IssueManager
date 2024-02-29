@@ -23,6 +23,8 @@ public class IssueWriter {
 	 * Write the the list of issues into a file
 	 * @param filename the file to write into
 	 * @param issues the list of issues
+	 * @throws IOException if unable to write to file
+	 * @throws IllegalArgumentException if there is any errro
 	 */
 	public static void writeIssuesToFile(String filename, List<Issue> issues) throws IOException {
 		PrintStream fileWriter = new PrintStream(new File(filename));

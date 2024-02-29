@@ -15,11 +15,16 @@ public class IssueList {
 	/** The counter*/
 	private int counter;
 	
+	/** The list of issues*/
+	private ArrayList<Issue> issues;
+	
 	/**
-	 * The contrusctor for IssueList
+	 * The contrusctor for IssueList. When a new IssueList is set
+	 * the counte reset to 0 and a new IssueList is instantiated
 	 */
 	public IssueList() {
-		
+		counter = 0;
+		issues = new ArrayList<Issue>();
 	}
 	
 	/**
@@ -30,7 +35,9 @@ public class IssueList {
 	 * @return the index which the issue is added to
 	 */
 	public int addIssue(IssueType issueType, String summary, String note) {
-		return 0;
+		Issue issue = new Issue(counter++, issueType, summary, note);
+		addIssue(issue);
+		return issues.indexOf(issue);
 	}
 	
 	/**
@@ -38,7 +45,12 @@ public class IssueList {
 	 * @param issues the list of issues provided
 	 */
 	public void addIssues(ArrayList<Issue> issues) {
-		//T
+		for (int i = 0; i < issues.size(); i++) {
+			addIssue(issues.get(i));
+		}
+		if(!issues.isEmpty()) {
+			counter = issues.get(issues.size() - 1).getIssueId() + 1;
+		}
 	}
 	
 	/**
@@ -46,7 +58,13 @@ public class IssueList {
 	 * @param issue the issue to add
 	 */
 	private void addIssue(Issue issue) {
-		
+		int index = 0;
+		for (int i = 0; i < issues.size(); i++) {
+			if (issues.get(i).getIssueId() < issue.getIssueId()) {
+				index++;
+			}
+		}
+		issues.add(index, issue);
 	}
 	
 	/**
@@ -54,7 +72,7 @@ public class IssueList {
 	 * @return The list of issues
 	 */
 	public ArrayList<Issue> getIssues() {
-		return null;
+		return issues;
 	}
 	
 	/**
@@ -63,7 +81,13 @@ public class IssueList {
 	 * @return the list of issues
 	 */
 	public ArrayList<Issue> getIssuesByType(String issueType) {
-		return null;
+		ArrayList<Issue> issuesByType = new ArrayList<Issue>();
+		for(int i = 0; i < issues.size(); i++) {
+			if(issues.get(i).getIssueType().equals(issueType)) {
+				issuesByType.add(issues.get(i));
+			}
+		}
+		return issuesByType;
 	}
 	
 	
@@ -73,17 +97,22 @@ public class IssueList {
 	 * @return the issue
 	 */
 	public Issue getIssueById(int id) {
+		for (int i = 0; i < issues.size(); i++) {
+			if (issues.get(i).getIssueId() == id) {
+				return issues.get(i);
+			}
+		}
 		return null;
 	}
 	
 	
 	/**
 	 * Execute the command
-	 * @param state the state
-	 * @param command the command 
+	 * @param id the id of an issue
+	 * @param command the command to update the issue
 	 */
-	public void executeCommand(int state, Command command) {
-		
+	public void executeCommand(int id, Command command) {
+		issues.get(id).update(command);
 	}
 	
 	/**
@@ -91,7 +120,11 @@ public class IssueList {
 	 * @param id the id of issue
 	 */
 	public void deleteIssueById(int id) {
-		
+		for (int i = 0; i < issues.size(); i++) {
+			if (issues.get(i).getIssueId() == id) {
+				issues.remove(i);
+			}
+		}
 	}
 	
 	
