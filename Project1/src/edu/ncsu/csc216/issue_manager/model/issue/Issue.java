@@ -216,9 +216,6 @@ public class Issue {
 	 * @throws IllegalArgumentException if owner is null or empty
 	 */
 	private void setOwner(String owner) {
-		if (owner == null) {
-			throw new IllegalArgumentException("Issue cannot be created.");
-		}
 		this.owner = owner;
 	}
 
@@ -253,9 +250,6 @@ public class Issue {
 		case Command.R_WORKSFORME:
 			resolution = Resolution.WORKSFORME;
 			break;
-		case "":
-			resolution = null;
-			break;
 		default:
 			break;
 		}
@@ -268,7 +262,7 @@ public class Issue {
 	 */
 	private void setNotes(ArrayList<String> notes) {
 		if (notes == null) {
-			throw new IllegalArgumentException("Issue cannot be created");
+			throw new IllegalArgumentException("Issue cannot be created.");
 		}
 		this.notes = notes;
 	}

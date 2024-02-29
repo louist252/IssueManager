@@ -123,9 +123,6 @@ public class IssueTest {
 				() -> new Issue(ID, Issue.NEW_NAME, Issue.I_BUG, null, OWNER, true, Command.R_FIXED, notes));
 		assertEquals("Issue cannot be created.", e4.getMessage(), "Incorrect exception thrown with null summary " + null);
 		
-		Exception e5 = assertThrows(IllegalArgumentException.class,
-				() -> new Issue(ID, Issue.NEW_NAME, Issue.I_BUG, SUMMARY, null, true, Command.R_FIXED, notes));
-		assertEquals("Issue cannot be created.", e5.getMessage(), "Incorrect exception thrown with null owner " + null);
 		
 		Exception e6 = assertThrows(IllegalArgumentException.class,
 				() -> new Issue(ID, Issue.NEW_NAME, Issue.I_BUG, SUMMARY, OWNER, true, null, notes));

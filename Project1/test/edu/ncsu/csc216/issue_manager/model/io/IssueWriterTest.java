@@ -5,9 +5,13 @@ package edu.ncsu.csc216.issue_manager.model.io;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
-import edu.ncsu.csc216.pack_scheduler.io.CourseRecordIO;
+import edu.ncsu.csc216.issue_manager.model.issue.Issue;
+
 
 /**
  * The IssueWriterTest method
@@ -22,7 +26,18 @@ public class IssueWriterTest {
 	 */
 	@Test
 	public void testWriteIssuesToFile() {
-		ArrayList
+		ArrayList<String> notes = new ArrayList<String>();
+		notes.add("[New] Note 1");
+		notes.add("[Confirmed] Note 2");
+		notes.add("[Working] Note 3");
+		ArrayList<Issue> issues = new ArrayList<Issue>();
+		issues.add(new Issue(4, "Cloesd", "Bug", "Issue description", null, false, "WontFix", notes));
+		
+		try {
+			IssueWriter.writeIssuesToFile("test-files/actual_issue", issues);
+		} catch (IOException e) {
+			fail("Cannot write to course records file");
+		}
 	}
 
 	/**
