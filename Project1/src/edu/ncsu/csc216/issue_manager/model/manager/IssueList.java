@@ -109,11 +109,11 @@ public class IssueList {
 	
 	/**
 	 * Execute the command
-	 * @param id the id of an issue
+	 * @param idx index of the issue that we want to test for
 	 * @param command the command to update the issue
 	 */
-	public void executeCommand(int id, Command command) {
-		issues.get(id).update(command);
+	public void executeCommand(int idx, Command command) {
+		issues.get(idx).update(command);
 	}
 	
 	/**

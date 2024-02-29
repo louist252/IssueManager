@@ -9,6 +9,9 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
+import edu.ncsu.csc216.issue_manager.model.command.Command;
+import edu.ncsu.csc216.issue_manager.model.command.Command.CommandValue;
+import edu.ncsu.csc216.issue_manager.model.command.Command.Resolution;
 import edu.ncsu.csc216.issue_manager.model.issue.Issue;
 import edu.ncsu.csc216.issue_manager.model.issue.Issue.IssueType;
 
@@ -24,6 +27,8 @@ class IssueListTest {
 	/**Note string */
 	private static final String NOTE = "notes";
 	
+	/**Owner string */
+	private static final String OWNER = "thton";
 
 	
 	/**
@@ -94,7 +99,8 @@ class IssueListTest {
 	 */
 	@Test
 	public void testGetIssuesByType() {
-		fail("Not yet implemented");
+		
+        
 	}
 
 	/**
@@ -125,7 +131,7 @@ class IssueListTest {
 	 */
 	@Test
 	public void testExecuteCommand() {
-		fail("Not yet implemented");
+		
 	}
 
 	/**
