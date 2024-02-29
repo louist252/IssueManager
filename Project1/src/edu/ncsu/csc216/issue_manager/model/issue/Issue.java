@@ -269,7 +269,7 @@ public class Issue {
 
 	/**
 	 * Gets the issueId
-	 * @return the issueId
+	 * @return the int of issueId
 	 */
 	public int getIssueId() {
 		return issueId;
@@ -277,7 +277,7 @@ public class Issue {
 
 	/**
 	 * Gets the stateName
-	 * @return the stateName
+	 * @return the a string of stateName
 	 */
 	public String getStateName() {
 		String stateName = null;
@@ -298,7 +298,7 @@ public class Issue {
 	
 	/**
 	 * Gets the issueType
-	 * @return the issueType
+	 * @return the a string of IssueType
 	 */
 	public String getIssueType() {
 		String type = null;
@@ -318,7 +318,7 @@ public class Issue {
 	
 	/**
 	 * Gets the resolution
-	 * @return the resolution;
+	 * @return the string of resolution
 	 */
 	public String getResolution() {
 		String r = null; 
@@ -343,7 +343,7 @@ public class Issue {
 
 	/**
 	 * Gets the owner
-	 * @return the owner
+	 * @return the string of owner
 	 */
 	public String getOwner() {
 		return owner;
@@ -351,7 +351,7 @@ public class Issue {
 	
 	/**
 	 * Gets the summary
-	 * @return the summary
+	 * @return the string of summary
 	 */
 	public String getSummary() {
 		return summary;
@@ -359,7 +359,7 @@ public class Issue {
 
 	/**
 	 * Gets the notes
-	 * @return the notes
+	 * @return the ArrayList string of notes
 	 */
 	public ArrayList<String> getNotes() {
 		return notes;
