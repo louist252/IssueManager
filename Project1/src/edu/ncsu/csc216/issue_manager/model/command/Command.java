@@ -51,7 +51,7 @@ public class Command {
 		if (c == null) {
 			throw new IllegalArgumentException("Invalid information.");
 		}
-		if (c == CommandValue.ASSIGN && ownerId.length() == 0 || ownerId == null) {
+		if (c == CommandValue.ASSIGN && ownerId == null || ownerId.length() == 0) {
 			throw new IllegalArgumentException("Invalid information.");
 		}
 		if (c == CommandValue.RESOLVE && r == null) {

@@ -120,7 +120,7 @@ public class Issue {
 	 */
 	public Issue(int id, String state, String issueType, String summary, String owner, 
 			boolean confirmed, String resolution, ArrayList<String> notes) {
-		if ( id < 1) {
+		if (id < 1) {
 			throw new IllegalArgumentException("Issue cannot be created");
 		}
 		
@@ -136,11 +136,11 @@ public class Issue {
 			throw new IllegalArgumentException("Issue cannot be created");
 		}
 		
-		if (owner == null || owner.length() == 0 ) {
+		if (owner == null) {
 			throw new IllegalArgumentException("Issue cannot be created");
 		}
 		
-		if (resolution == null || resolution.length() == 0 ) {
+		if (resolution.length() == 0 ) {
 			throw new IllegalArgumentException("Issue cannot be created");
 		}
 		
@@ -211,7 +211,6 @@ public class Issue {
 		if (type == null || type.length() == 0 ) {
 			throw new IllegalArgumentException("Issue cannot be created");
 		}
-		
 		switch (type) {
 		case I_ENHANCEMENT:
 			issueType = IssueType.ENHANCEMENT;
@@ -243,7 +242,7 @@ public class Issue {
 	 * @throws IllegalArgumentException if owner is null or empty
 	 */
 	private void setOwner(String owner) {
-		if (owner == null || owner.length() == 0 ) {
+		if (owner == null) {
 			throw new IllegalArgumentException("Issue cannot be created");
 		}
 		this.owner = owner;
@@ -263,7 +262,7 @@ public class Issue {
 	 * @throws IllegalArgumentException if r is null or empty
 	 */
 	private void setResolution(String r) {
-		if (r == null || r.length() == 0 ) {
+		if (r.length() == 0 ) {
 			throw new IllegalArgumentException("Issue cannot be created");
 		}
 		
@@ -281,6 +280,7 @@ public class Issue {
 			resolution = Resolution.WORKSFORME;
 			break;
 		default:
+			resolution = null;
 			break;
 		}
 	}
@@ -312,15 +312,15 @@ public class Issue {
 	public String getStateName() {
 		String stateName = null;
 		if (state == newState) {
-			stateName = NEW_NAME;
+			stateName = newState.getStateName();
 		} else if (state == workingState) {
-			stateName = WORKING_NAME;
+			stateName = workingState.getStateName();
 		} else if (state == confirmedState) {
-			stateName = CONFIRMED_NAME;
+			stateName = confirmedState.getStateName();
 		} else if (state == verifyingState) {
-			stateName = VERIFYING_NAME;
+			stateName = verifyingState.getStateName();
 		} else if (state == closedState) {
-			stateName = CLOSED_NAME;
+			stateName = closedState.getStateName();
 		}
 
 		return stateName;
@@ -364,6 +364,7 @@ public class Issue {
 		case WORKSFORME:
 			r = Command.R_WORKSFORME;
 		default:
+			r = "";
 			break;
 		}
 		return r;
@@ -430,7 +431,7 @@ public class Issue {
 	 * @throws IllegalArgumentException if note is null or empty
 	 */
 	private void addNote(String note) {
-		if (note == null || note.length() == 0) {
+		if (note == null) {
 			throw new IllegalArgumentException("Invalid information.");
 		}
 		String noteWithState = "[" + getStateName() + "] " + note;
@@ -442,7 +443,7 @@ public class Issue {
 	 * @param command command to update
 	 */
 	public void update (Command command) {
-		//To be implemeted
+		state.updateState(command);
 	}
 	
 	
@@ -490,14 +491,34 @@ public class Issue {
 		
 		@Override
 		public void updateState(Command command) {
-			// TODO Auto-generated method stub
-			
+			switch(issueType) {
+			case BUG:
+				if(isConfirmed()) {
+					if(getOwner().length() != 0) {
+						setState(WORKING_NAME);
+					} else {
+						setState(CONFIRMED_NAME);
+					}
+				} else {
+					setState(NEW_NAME);
+				}
+				break;
+			case ENHANCEMENT:
+				if(getOwner().length() != 0) {
+					setState(WORKING_NAME);
+				} else {
+					setState(NEW_NAME);
+				}
+				break;
+			default:
+				throw new UnsupportedOperationException("Invalid information.");
+			}
+			addNote(command.getNote());
 		}
 
 		@Override
 		public String getStateName() {
-			// TODO Auto-generated method stub
-			return null;
+			return CLOSED_NAME;
 		}
 		
 	}
@@ -516,14 +537,23 @@ public class Issue {
 		
 		@Override
 		public void updateState(Command command) {
-			// TODO Auto-generated method stub
-			
+			switch(command.getCommand()) {
+			case VERIFY:
+				setState(CLOSED_NAME);
+				break;
+			case REOPEN:
+				setState(WORKING_NAME);
+				setResolution(null);
+				break;
+			default:
+				throw new UnsupportedOperationException("Invalid information.");
+			}
+			addNote(command.getNote());
 		}
 
 		@Override
 		public String getStateName() {
-			// TODO Auto-generated method stub
-			return null;
+			return VERIFYING_NAME;
 		}
 		
 	}
@@ -542,14 +572,27 @@ public class Issue {
 		
 		@Override
 		public void updateState(Command command) {
-			// TODO Auto-generated method stub
-			
+			switch(command.getCommand()) {
+			case ASSIGN:
+				owner = command.getOwnerId();
+				setState(WORKING_NAME);
+				break;
+			case RESOLVE:
+				if (command.getResolution() == Command.Resolution.WONTFIX) {
+					setState(CLOSED_NAME);
+				} else {
+					throw new UnsupportedOperationException("Invalid information.");
+				}
+				break;
+			default:
+				throw new UnsupportedOperationException("Invalid information.");
+			}
+			addNote(command.getNote());
 		}
 
 		@Override
 		public String getStateName() {
-			// TODO Auto-generated method stub
-			return null;
+			return CONFIRMED_NAME;
 		}
 		
 	}
@@ -563,19 +606,40 @@ public class Issue {
 		 * The constructor for NewState
 		 */
 		private NewState() {
-			
+
 		}
 		
 		@Override
 		public void updateState(Command command) {
-			// TODO Auto-generated method stub
-			
+			switch(issueType) {
+			case ENHANCEMENT:
+				if(command.getCommand() == Command.CommandValue.ASSIGN) {
+					setState(WORKING_NAME);
+					owner = command.getOwnerId();
+				} else if (command.getCommand() == Command.CommandValue.RESOLVE) {
+					setState(CLOSED_NAME);
+				} else {
+					throw new UnsupportedOperationException("Invalid information.");
+				}
+				break;
+			case BUG:
+				if (command.getCommand() == Command.CommandValue.CONFIRM) {
+					setState(CONFIRMED_NAME);
+				} else if (command.getCommand() == Command.CommandValue.RESOLVE){
+					setState(CLOSED_NAME);
+				} else {
+					throw new UnsupportedOperationException("Invalid information.");
+				}
+				break;
+			default:
+				throw new UnsupportedOperationException("Invalid information.");
+			}
+			addNote(command.getNote());
 		}
 
 		@Override
 		public String getStateName() {
-			// TODO Auto-generated method stub
-			return null;
+			return NEW_NAME;
 		}
 		
 	}
@@ -594,14 +658,28 @@ public class Issue {
 		
 		@Override
 		public void updateState(Command command) {
-			// TODO Auto-generated method stub
-			
+			switch(command.getResolution()) {
+			case FIXED:
+				setState(VERIFYING_NAME);
+			case DUPLICATE:
+			case WONTFIX:
+				setState(CLOSED_NAME);
+			case WORKSFORME:
+				if (issueType == IssueType.BUG) {
+					setState(CLOSED_NAME);
+				} else {
+					throw new UnsupportedOperationException("Invalid information.");
+				}
+				break;
+			default:
+				throw new UnsupportedOperationException("Invalid information.");
+			}
+			addNote(command.getNote());
 		}
 
 		@Override
 		public String getStateName() {
-			// TODO Auto-generated method stub
-			return null;
+			return WORKING_NAME;
 		}
 			
 	}
