@@ -20,10 +20,10 @@ public class IssueList {
 	
 	/**
 	 * The contrusctor for IssueList. When a new IssueList is set
-	 * the counte reset to 0 and a new IssueList is instantiated
+	 * the counter reset to 0 and a new IssueList is instantiated
 	 */
 	public IssueList() {
-		counter = 0;
+		counter = 1;
 		issues = new ArrayList<Issue>();
 	}
 	
@@ -32,10 +32,10 @@ public class IssueList {
 	 * @param issueType the issueType
 	 * @param summary the summary
 	 * @param note the note
-	 * @return the index which the issue is added to
+	 * @return the index of the issue
 	 */
 	public int addIssue(IssueType issueType, String summary, String note) {
-		Issue issue = new Issue(counter++, issueType, summary, note);
+		Issue issue = new Issue(counter, issueType, summary, note);
 		addIssue(issue);
 		return issues.indexOf(issue);
 	}
@@ -65,6 +65,7 @@ public class IssueList {
 			}
 		}
 		issues.add(index, issue);
+		counter = issues.get(issues.size() - 1).getIssueId() + 1;
 	}
 	
 	/**
