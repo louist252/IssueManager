@@ -31,7 +31,7 @@ public class IssueReader {
 				try {
 					Issue issue = processIssue(issueString);
 					issueList.add(issue);
-				} catch (Exception e) 
+				} catch (Exception e) {
 					//For other class
 				}
 			}
