@@ -86,15 +86,15 @@ public class Issue {
 	 */
 	public Issue(int id, IssueType issueType, String summary, String note) {
 		if (issueType == null ) {
-			throw new IllegalArgumentException("Issue cannot be created");
+			throw new IllegalArgumentException("Issue cannot be created.");
 		}
 			
 		if (summary == null || summary.length() == 0) {
-			throw new IllegalArgumentException("Issue cannot be created");
+			throw new IllegalArgumentException("Issue cannot be created.");
 		}
 		
 		if (id < 1) {
-			throw new IllegalArgumentException("Issue cannot be created");
+			throw new IllegalArgumentException("Issue cannot be created.");
 		}
 		setIssueId(id);
 		setSummary(summary);
@@ -120,33 +120,7 @@ public class Issue {
 	 */
 	public Issue(int id, String state, String issueType, String summary, String owner, 
 			boolean confirmed, String resolution, ArrayList<String> notes) {
-		if (id < 1) {
-			throw new IllegalArgumentException("Issue cannot be created");
-		}
 		
-		if (state == null || state.length() == 0 ) {
-			throw new IllegalArgumentException("Issue cannot be created");
-		}
-		
-		if (issueType == null || issueType.length() == 0 ) {
-			throw new IllegalArgumentException("Issue cannot be created");
-		}
-		
-		if (summary == null || summary.length() == 0 ) {
-			throw new IllegalArgumentException("Issue cannot be created");
-		}
-		
-		if (owner == null) {
-			throw new IllegalArgumentException("Issue cannot be created");
-		}
-		
-		if (resolution.length() == 0 ) {
-			throw new IllegalArgumentException("Issue cannot be created");
-		}
-		
-		if (notes == null) {
-			throw new IllegalArgumentException("Issue cannot be created");
-		}
 		
 		setIssueId(id);
 		setState(state);
@@ -165,7 +139,7 @@ public class Issue {
 	 */
 	private void setIssueId(int issueId) {
 		if (issueId < 1) {
-			throw new IllegalArgumentException("Issue cannot be created");
+			throw new IllegalArgumentException("Issue cannot be created.");
 		}
 		
 		this.issueId = issueId;
@@ -178,7 +152,7 @@ public class Issue {
 	 */
 	private void setState(String issueState) {
 		if (issueState == null || issueState.length() == 0 ) {
-			throw new IllegalArgumentException("Issue cannot be created");
+			throw new IllegalArgumentException("Issue cannot be created.");
 		}
 		
 		switch(issueState) {
@@ -209,7 +183,7 @@ public class Issue {
 	 */
 	private void setIssueType (String type) {
 		if (type == null || type.length() == 0 ) {
-			throw new IllegalArgumentException("Issue cannot be created");
+			throw new IllegalArgumentException("Issue cannot be created.");
 		}
 		switch (type) {
 		case I_ENHANCEMENT:
@@ -230,7 +204,7 @@ public class Issue {
 	 */
 	private void setSummary(String summary) {
 		if (summary == null || summary.length() == 0 ) {
-			throw new IllegalArgumentException("Issue cannot be created");
+			throw new IllegalArgumentException("Issue cannot be created.");
 		}
 		
 		this.summary = summary;
@@ -243,7 +217,7 @@ public class Issue {
 	 */
 	private void setOwner(String owner) {
 		if (owner == null) {
-			throw new IllegalArgumentException("Issue cannot be created");
+			throw new IllegalArgumentException("Issue cannot be created.");
 		}
 		this.owner = owner;
 	}
@@ -262,8 +236,8 @@ public class Issue {
 	 * @throws IllegalArgumentException if r is null or empty
 	 */
 	private void setResolution(String r) {
-		if (r.length() == 0 ) {
-			throw new IllegalArgumentException("Issue cannot be created");
+		if (r == null ) {
+			throw new IllegalArgumentException("Issue cannot be created.");
 		}
 		
 		switch(r) {
@@ -279,8 +253,10 @@ public class Issue {
 		case Command.R_WORKSFORME:
 			resolution = Resolution.WORKSFORME;
 			break;
-		default:
+		case "":
 			resolution = null;
+			break;
+		default:
 			break;
 		}
 	}
@@ -344,6 +320,7 @@ public class Issue {
 		}
 		return type;
 	}
+
 	
 	/**
 	 * Gets the resolution
@@ -364,9 +341,9 @@ public class Issue {
 		case WORKSFORME:
 			r = Command.R_WORKSFORME;
 		default:
-			r = "";
 			break;
 		}
+		
 		return r;
 	}
 
@@ -399,11 +376,11 @@ public class Issue {
 	 * @return the string of notes
 	 */
 	public String getNotesString() {
-		String noteString = null;
+		String noteString = "";
 		for (int i = 0; i < notes.size(); i++) {
 			noteString += "- " + notes.get(i) + '\n'; 
 		}
-		
+		noteString = noteString.substring(0, noteString.length() - 1);
 		return noteString;
 	}
 	
@@ -421,7 +398,7 @@ public class Issue {
 	 */
 	public String toString() {
 		return "* " + getIssueId() + "," + getStateName() + "," + getIssueType() + "," + getSummary() + "," + 
-				getOwner() +  "," + isConfirmed() + "," + getResolution() + '\n' + getNotesString();
+				getOwner() +  "," + isConfirmed() + "," + getResolution() + "\n" + getNotesString();
 	}
 	
 	/**
