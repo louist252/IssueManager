@@ -26,11 +26,13 @@ public class IssueWriter {
 	 */
 	public static void writeIssuesToFile(String filename, List<Issue> issues) throws IOException {
 		PrintStream fileWriter = new PrintStream(new File(filename));
-
-		for (int i = 0; i < issues.size(); i++) {
-			fileWriter.println(issues.get(i).toString());
+		try {
+			for (int i = 0; i < issues.size(); i++) {
+				fileWriter.println(issues.get(i).toString());
+			}
+		} catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("Unable to save file");
 		}
-
 		fileWriter.close();
 	}
 }
