@@ -23,7 +23,7 @@ public class IssueReader {
 	 * @return an array of Issues
 	 */
 	public static ArrayList<Issue> readIssuesFromFile(String filename) {
-		ArrayList<Issue> issueList = new ArrayList<>();
+		ArrayList<Issue> issueList = new ArrayList<Issue>();
 		try (Scanner scan = new Scanner(filename)) {
 			scan.useDelimiter("\\r?\\n?[*]");
 			while(scan.hasNext()) {
@@ -31,7 +31,7 @@ public class IssueReader {
 				try {
 					Issue issue = processIssue(issueString);
 					issueList.add(issue);
-				} catch (Exception e) {
+				} catch (Exception e) 
 					//For other class
 				}
 			}
