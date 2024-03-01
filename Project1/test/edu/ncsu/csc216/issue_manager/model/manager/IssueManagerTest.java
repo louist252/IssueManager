@@ -5,7 +5,14 @@ package edu.ncsu.csc216.issue_manager.model.manager;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import edu.ncsu.csc216.issue_manager.model.command.Command;
+import edu.ncsu.csc216.issue_manager.model.issue.Issue;
+import edu.ncsu.csc216.issue_manager.model.issue.Issue.IssueType;
 
 /**
  * The IssueManagerTets
@@ -13,20 +20,33 @@ import org.junit.jupiter.api.Test;
  */
 class IssueManagerTest {
 
-	/**
-	 * Test method for getInstance method
-	 */
-	@Test
-	public void testGetInstance() {
-		fail("Not yet implemented");
-	}
-
+	/**Summary */
+	private static final String SUMMARY = "Issue description";
+	
+	/**Note */
+	private static final String NOTE = "note";
+	
+	
+	/**Owner */
+	private static final String OWNER = "thton";
+	
+	/**An instance of IssueManager */
+	 
+	private IssueManager manager;
+	
+	//Set up an instance of IssueManager for testing
+	 @BeforeEach
+	    void setUp() {
+	        manager = IssueManager.getInstance();
+	    }
+	
 	/**
 	 * Test method for saveIssuesToFile method
 	 */
 	@Test
 	public void testSaveIssuesToFile() {
-		fail("Not yet implemented");
+        assertDoesNotThrow(() -> manager.saveIssuesToFile("test-files/issues.txt"));
+
 	}
 
 	/**
@@ -34,7 +54,7 @@ class IssueManagerTest {
 	 */
 	@Test
 	public void testLoadIssuesFromFile() {
-		fail("Not yet implemented");
+        assertDoesNotThrow(() -> manager.loadIssuesFromFile("test-files/issues.txt"));
 	}
 
 	/**
@@ -42,7 +62,8 @@ class IssueManagerTest {
 	 */
 	@Test
 	public void testCreateNewIssueList() {
-		fail("Not yet implemented");
+		 manager.createNewIssueList();
+		 assertEquals(0, manager.getIssueListAsArray().length, "Incorrect length for empty array");
 	}
 
 	/**
@@ -50,7 +71,26 @@ class IssueManagerTest {
 	 */
 	@Test
 	public void testGetIssueListAsArray() {
-		fail("Not yet implemented");
+		 manager.addIssueToList(IssueType.BUG, "Summary1", "Note1");
+		 manager.addIssueToList(IssueType.ENHANCEMENT, "Summary2", "Note2");
+	
+		 Object[][] issueArray = manager.getIssueListAsArray();
+
+		 //Check size of array
+		 assertEquals(2, issueArray.length);
+		 
+		 
+		 assertEquals(1, issueArray[0][0], "Incorrect issue Id");
+		 assertEquals(null, issueArray[0][1]); 
+		 assertEquals(Issue.I_BUG, issueArray[0][2]); 
+		 assertEquals("Summary1", issueArray[0][3]);
+
+		 assertEquals(2, issueArray[1][0]); 
+		 assertEquals(null, issueArray[1][1]); 
+		 assertEquals(Issue.I_ENHANCEMENT, issueArray[1][2]); 
+		 assertEquals("Summary2", issueArray[1][3]); 
+
+		
 	}
 
 	/**
@@ -58,7 +98,22 @@ class IssueManagerTest {
 	 */
 	@Test
 	public void testGetIssueListAsArrayByIssueType() {
-		fail("Not yet implemented");
+		manager.addIssueToList(IssueType.BUG, "summary1", "note1");
+	    manager.addIssueToList(IssueType.ENHANCEMENT, SUMMARY, NOTE);
+	    manager.addIssueToList(IssueType.BUG, "summary2", "note2");
+	    
+	    
+	    //Test for type not bug or enhancement
+	    Object[][] emptyArray = manager.getIssueListAsArrayByIssueType("InvalidType");
+	    assertEquals(0, emptyArray.length);
+	    
+	    Object[][] arr2 = manager.getIssueListAsArrayByIssueType(Issue.I_ENHANCEMENT);
+	    assertEquals(1, arr2.length, "Incorrect size");
+	    
+	    Object[][] arr1 = manager.getIssueListAsArrayByIssueType(Issue.I_BUG);
+	    assertEquals(2, arr1.length, "Incorrect size");
+	    
+	    
 	}
 
 	/**
@@ -66,7 +121,8 @@ class IssueManagerTest {
 	 */
 	@Test
 	public void testGetIssueById() {
-		fail("Not yet implemented");
+		//Id 0 does not exist
+		assertNull(manager.getIssueById(0));
 	}
 
 	/**
@@ -74,7 +130,7 @@ class IssueManagerTest {
 	 */
 	@Test
 	public void testExecuteCommand() {
-		fail("Not yet implemented");
+		 assertDoesNotThrow(() -> manager.executeCommand(1, new Command(Command.CommandValue.ASSIGN, OWNER, Command.Resolution.WONTFIX, NOTE)));
 	}
 
 	/**
@@ -85,12 +141,5 @@ class IssueManagerTest {
 		fail("Not yet implemented");
 	}
 
-	/**
-	 * Test method for addIssueToList method
-	 */
-	@Test
-	public void testAddIssueToList() {
-		fail("Not yet implemented");
-	}
-
+	
 }

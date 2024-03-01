@@ -104,7 +104,7 @@ public class IssueManager {
 		
 		
 		for(int i = 0; i < issuesByType.size(); i++) {
-			if (!issuesByType.get(i).getIssueType().equals(Issue.I_BUG) ||
+			if (!issuesByType.get(i).getIssueType().equals(Issue.I_BUG) &&
 				!issuesByType.get(i).getIssueType().equals(Issue.I_ENHANCEMENT)) {
 				Object[][] emptyArray = new Object[0][0];
 				return emptyArray;

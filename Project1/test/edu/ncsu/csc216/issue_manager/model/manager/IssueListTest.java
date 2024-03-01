@@ -27,10 +27,6 @@ class IssueListTest {
 	/**Note string */
 	private static final String NOTE = "notes";
 	
-	/**Owner string */
-	private static final String OWNER = "thton";
-
-	
 	/**
 	 * Test method for IssueList constructor
 	 */
