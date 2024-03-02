@@ -22,7 +22,6 @@ public class CommandTest {
 	 */
 	@Test
 	public void testCommandValid() {
-		//Test with Assign command value and Fixed resolution
 		Command c1 = assertDoesNotThrow (
 				() -> new Command(Command.CommandValue.ASSIGN, ID, Command.Resolution.FIXED, NOTE), 
 				"Should not throw exception");
@@ -116,7 +115,8 @@ public class CommandTest {
 				() -> new Command(Command.CommandValue.ASSIGN, ID, Command.Resolution.FIXED, ""));
 		assertEquals("Invalid information.", e6.getMessage(), "Incorrect exception thrown with empty note " + "");
 	
-	}
+	} 
+
 }
 
 	
