@@ -44,6 +44,7 @@ public class CommandTest {
 				() -> assertEquals(Command.Resolution.DUPLICATE, c2.getResolution(), "incorrect resolution"),
 				() -> assertEquals(NOTE, c2.getNote(), "incorrect note"));
 		
+		//Test with Verify CommandValue and WONTFIX Resolution
 		Command c3 = assertDoesNotThrow (
 				() -> new Command(Command.CommandValue.VERIFY, ID, Command.Resolution.WONTFIX, NOTE), 
 				"Should not throw exception");
@@ -53,6 +54,30 @@ public class CommandTest {
 				() -> assertEquals(ID, c3.getOwnerId(), "incorrect owner id"),
 				() -> assertEquals(Command.Resolution.WONTFIX, c3.getResolution(), "incorrect resolution"),
 				() -> assertEquals(NOTE, c3.getNote(), "incorrect note"));
+		
+		//Test with Resolve CommandValue and WORKSFORME Resolution
+		Command c4 = assertDoesNotThrow (
+				() -> new Command(Command.CommandValue.RESOLVE, ID, Command.Resolution.WORKSFORME, NOTE), 
+				"Should not throw exception");
+		
+		assertAll ("Command",
+				() -> assertEquals(Command.CommandValue.RESOLVE, c4.getCommand(), "incorrect command value"),
+				() -> assertEquals(ID, c4.getOwnerId(), "incorrect owner id"),
+				() -> assertEquals(Command.Resolution.WORKSFORME, c4.getResolution(), "incorrect resolution"),
+				() -> assertEquals(NOTE, c4.getNote(), "incorrect note"));
+		
+		//Test with Reopen CommandValue and WORKSFORME Resolution
+		Command c5 = assertDoesNotThrow (
+				() -> new Command(Command.CommandValue.REOPEN, ID, Command.Resolution.WORKSFORME, NOTE), 
+				"Should not throw exception");
+		
+		assertAll ("Command",
+				() -> assertEquals(Command.CommandValue.REOPEN, c5.getCommand(), "incorrect command value"),
+				() -> assertEquals(ID, c5.getOwnerId(), "incorrect owner id"),
+				() -> assertEquals(Command.Resolution.WORKSFORME, c5.getResolution(), "incorrect resolution"),
+				() -> assertEquals(NOTE, c5.getNote(), "incorrect note"));
+
+		
 	}
 	
 	/**
@@ -80,6 +105,17 @@ public class CommandTest {
 		Exception e4 = assertThrows(IllegalArgumentException.class,
 				() -> new Command(Command.CommandValue.ASSIGN, ID, Command.Resolution.FIXED, null));
 		assertEquals("Invalid information.", e4.getMessage(), "Incorrect exception thrown with null note " + null);
+		
+		//Test for empty owner id
+		Exception e5 = assertThrows(IllegalArgumentException.class,
+				() -> new Command(Command.CommandValue.ASSIGN, "", Command.Resolution.FIXED, NOTE));
+		assertEquals("Invalid information.", e5.getMessage(), "Incorrect exception thrown with empty owner Id " + "");
+		
+		//Test for null note
+		Exception e6 = assertThrows(IllegalArgumentException.class,
+				() -> new Command(Command.CommandValue.ASSIGN, ID, Command.Resolution.FIXED, ""));
+		assertEquals("Invalid information.", e6.getMessage(), "Incorrect exception thrown with empty note " + "");
+	
 	}
 }
 

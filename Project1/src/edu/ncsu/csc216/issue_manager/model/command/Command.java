@@ -124,6 +124,7 @@ public class Command {
 			r = Resolution.WORKSFORME;
 			break;
 		default:
+			r = null;	
 			break;
 		}
 		return r;

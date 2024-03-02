@@ -2,6 +2,7 @@ package edu.ncsu.csc216.issue_manager.model.io;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.File;
 
 import edu.ncsu.csc216.issue_manager.model.issue.Issue;
 
@@ -24,7 +25,7 @@ public class IssueReader {
 	 */
 	public static ArrayList<Issue> readIssuesFromFile(String filename) {
 		ArrayList<Issue> issueList = new ArrayList<Issue>();
-		try (Scanner scan = new Scanner(filename)) {
+		try (Scanner scan = new Scanner(new File(filename))) {
 			scan.useDelimiter("\\r?\\n?[*]");
 			while(scan.hasNext()) {
 				String issueString = scan.next();
@@ -36,7 +37,7 @@ public class IssueReader {
 				}
 			}
 			scan.close();
-		} catch (IllegalArgumentException e){
+		} catch (Exception e){
 			 throw new IllegalArgumentException("Unable to load file.");
 		}
 		
@@ -50,9 +51,8 @@ public class IssueReader {
 	 * @return an issue
 	 */
 	private static Issue processIssue(String line) {
-		Scanner scanner = new Scanner(line);
-		scanner.useDelimiter(",");
-		try {
+		try (Scanner scanner = new Scanner(line)){
+			scanner.useDelimiter(",");
 			int id = scanner.nextInt();
 			String state = scanner.next();
 			String type = scanner.next();
@@ -60,13 +60,19 @@ public class IssueReader {
 			String owner = scanner.next();
 			boolean confirmed = scanner.nextBoolean();
 			String resolution = scanner.next();
-			String notes = scanner.next();
+			String notes = "";
+			
+			while (scanner.hasNext()) {
+	            notes += scanner.next() + ",";
+	        }
+			
+			notes = notes.substring(0, notes.length() - 1);
 			
 			ArrayList<String> notesArray = new ArrayList<String>();
 			try (Scanner forNote = new Scanner(notes)){
 				forNote.useDelimiter("\\r?\\n?[-]");
 				while(forNote.hasNext()) {
-					String note = forNote.next();
+					String note = forNote.next().trim();
 					if(!note.isEmpty()) {
 						notesArray.add(note);
 					}

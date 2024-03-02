@@ -71,7 +71,7 @@ public class IssueReaderTest {
 	public void testReadIssuesFromFile() {
 		try {
 			ArrayList<Issue> issues = IssueReader.readIssuesFromFile(validTestFile);
-			assertEquals(5, issues.size());
+			assertEquals(validIssues.length, issues.size(), "Size does not match");
 			
 			for (int i = 0; i < validIssues.length; i++) {
 				assertEquals(validIssues[i], issues.get(i).toString());
@@ -87,12 +87,11 @@ public class IssueReaderTest {
 	 */
 	@Test
 	public void testReadIssuesFromFileInvalidFile() {
-		ArrayList<Issue> issues;
 		try {
-			issues = IssueReader.readIssuesFromFile(invalidTestFile);
+			ArrayList<Issue> issues = IssueReader.readIssuesFromFile("invalidTestFile");
 			assertEquals(0, issues.size());
 		} catch (IllegalArgumentException e) {
-			fail("Unable to load file " + validTestFile);
+			assertEquals("Unable to load file.", e.getMessage());
 		}
 		
 	}
