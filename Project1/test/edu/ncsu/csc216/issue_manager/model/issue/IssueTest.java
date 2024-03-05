@@ -506,7 +506,7 @@ public class IssueTest {
 			notes.add("[Confirmed] Note 2");
 			
 			//Issue with Fixed resolution and a comamnd with Verify CommandValue
-			Issue i1 = new Issue(ID, Issue.VERIFYING_NAME, Issue.I_ENHANCEMENT, SUMMARY, OWNER, true, Command.R_DUPLICATE, notes);
+			Issue i1 = new Issue(ID, Issue.VERIFYING_NAME, Issue.I_ENHANCEMENT, SUMMARY, OWNER, true, Command.R_FIXED, notes);
 			Command c1 = new Command (Command.CommandValue.VERIFY, OWNER, Command.Resolution.FIXED, NOTE);
 			i1.update(c1);
 			assertEquals(Issue.CLOSED_NAME, i1.getStateName(), "Incorrect state");
@@ -523,6 +523,95 @@ public class IssueTest {
 			assertEquals("- [New] Note 1\n"
 					+ "- [Confirmed] Note 2\n"
 					+ "- [Working] notes", i1.getNotesString(), "Incorrect notes");
+			
+			//Test if the Resolution is not Fixed
+			Issue i3 = new Issue(ID, Issue.VERIFYING_NAME, Issue.I_ENHANCEMENT, SUMMARY, OWNER, true, Command.R_DUPLICATE, notes);
+			Command c3 = new Command (Command.CommandValue.VERIFY, OWNER, Command.Resolution.FIXED, NOTE);
+			Exception e1 = assertThrows(UnsupportedOperationException.class, () -> i3.update(c3));
+			assertEquals("Invalid information.", e1.getMessage(), "Incorrect exception thrown with invalid CommandValue");
+			
+			//Test if the CommandValue is not Reopen nor Verify
+			Issue i4 = new Issue(ID, Issue.VERIFYING_NAME, Issue.I_ENHANCEMENT, SUMMARY, OWNER, true, Command.R_FIXED, notes);
+			Command c4 = new Command (Command.CommandValue.ASSIGN, OWNER, Command.Resolution.FIXED, NOTE);
+			Exception e2 = assertThrows(UnsupportedOperationException.class, () -> i4.update(c4));
+			assertEquals("Invalid information.", e2.getMessage(), "Incorrect exception thrown with invalid CommandValue");
+		}
+		
+
+		/**
+		 * Test update method in VerifyingState
+		 */
+		@Test
+		public void testUpdateCallToClosed() {
+			ArrayList<String> notes = new ArrayList<String>();
+			notes.add("[New] Note 1");
+			notes.add("[Confirmed] Note 2");
+			
+			//Test when command has Reopen CommandValue, issue has type Enhancment, and has an owner
+			Issue i1 = new Issue(ID, Issue.CLOSED_NAME, Issue.I_ENHANCEMENT, SUMMARY, "Owner name", true, Command.R_FIXED, notes);
+			Command c1 = new Command (Command.CommandValue.REOPEN, OWNER, Command.Resolution.FIXED, NOTE);
+			i1.update(c1);
+			assertEquals(Issue.WORKING_NAME, i1.getStateName(), "Incorrect state");
+			assertEquals("Owner name", i1.getOwner(), "Incorrect state");
+			assertEquals("- [New] Note 1\n"
+					+ "- [Confirmed] Note 2\n"
+					+ "- [Working] notes", i1.getNotesString(), "Incorrect notes");
+			
+			notes.remove(notes.size() - 1);
+			
+			//Test when command has Reopen CommandValue, issue has type Enhancment, and without an owner
+			Issue i2 = new Issue(ID, Issue.CLOSED_NAME, Issue.I_ENHANCEMENT, SUMMARY, "", true, Command.R_FIXED, notes);
+			Command c2 = new Command (Command.CommandValue.REOPEN, OWNER, Command.Resolution.FIXED, NOTE);
+			i2.update(c2);
+			assertEquals(Issue.NEW_NAME, i2.getStateName(), "Incorrect state");
+			assertEquals(OWNER, i2.getOwner(), "Incorrect state");
+			assertEquals("- [New] Note 1\n"
+					+ "- [Confirmed] Note 2\n"
+					+ "- [New] notes", i2.getNotesString(), "Incorrect notes");
+			
+			notes.remove(notes.size() - 1);
+			
+			//Test when command has Reopen CommandValue, issue has type Bug, is confirmed, and has an owner
+			Issue i3 = new Issue(ID, Issue.CLOSED_NAME, Issue.I_BUG, SUMMARY, "Owner name", true, Command.R_FIXED, notes);
+			Command c3 = new Command (Command.CommandValue.REOPEN, OWNER, Command.Resolution.FIXED, NOTE);
+			i3.update(c3);
+			assertEquals(Issue.WORKING_NAME, i3.getStateName(), "Incorrect state");
+			assertEquals("- [New] Note 1\n"
+					+ "- [Confirmed] Note 2\n"
+					+ "- [Working] notes", i3.getNotesString(), "Incorrect notes");
+			
+			notes.remove(notes.size() - 1);
+			
+			//Test when command has Reopen CommandValue, issue has type Bug, is confirmed, and has no owner
+			Issue i4 = new Issue(ID, Issue.CLOSED_NAME, Issue.I_BUG, SUMMARY, "", true, Command.R_FIXED, notes);
+			Command c4 = new Command (Command.CommandValue.REOPEN, OWNER, Command.Resolution.FIXED, NOTE);
+			i4.update(c4);
+			assertEquals(Issue.CONFIRMED_NAME, i4.getStateName(), "Incorrect state");
+			assertEquals(OWNER, i4.getOwner(), "Incorrect state");
+			assertEquals("- [New] Note 1\n"
+					+ "- [Confirmed] Note 2\n"
+					+ "- [Confirmed] notes", i4.getNotesString(), "Incorrect notes");
+			
+			notes.remove(notes.size() - 1);
+			
+			//Test when command has Reopen CommandValue, issue has type Bug, and is not confirmed, and has no owner
+			Issue i5 = new Issue(ID, Issue.CLOSED_NAME, Issue.I_BUG, SUMMARY, "", false, Command.R_FIXED, notes);
+			Command c5 = new Command (Command.CommandValue.REOPEN, OWNER, Command.Resolution.FIXED, NOTE);
+			i5.update(c5);
+			assertEquals(Issue.NEW_NAME, i5.getStateName(), "Incorrect state");
+			assertEquals(OWNER, i5.getOwner(), "Incorrect state");
+			assertEquals("- [New] Note 1\n"
+					+ "- [Confirmed] Note 2\n"
+					+ "- [New] notes", i5.getNotesString(), "Incorrect notes");
+			
+			//Test when command has CommandValue that is not Reopen
+			Issue i6 = new Issue(ID, Issue.CLOSED_NAME, Issue.I_BUG, SUMMARY, "", false, Command.R_FIXED, notes);
+			Command c6 = new Command (Command.CommandValue.RESOLVE, OWNER, Command.Resolution.FIXED, NOTE);
+			Exception e1 = assertThrows(UnsupportedOperationException.class, () -> i6.update(c6));
+			assertEquals("Invalid information.", e1.getMessage(), "Incorrect exception thrown with incorrect CommandValue");
+			
+			
+			
 			
 		}
 }

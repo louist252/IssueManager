@@ -468,29 +468,37 @@ public class Issue {
 		
 		@Override
 		public void updateState(Command command) {
-			switch(issueType) {
-			case BUG:
-				if(isConfirmed()) {
+			if (command.getCommand() == Command.CommandValue.REOPEN) {
+				setResolution("");
+				switch(issueType) {
+				case BUG:
+					if(isConfirmed()) {
+						if(getOwner().length() != 0) {
+							setState(WORKING_NAME);
+						} else {
+							setOwner(command.getOwnerId());
+							setState(CONFIRMED_NAME);
+						}
+					} else {
+						setOwner(command.getOwnerId());
+						setState(NEW_NAME);
+					}
+					break;
+				case ENHANCEMENT:
 					if(getOwner().length() != 0) {
 						setState(WORKING_NAME);
 					} else {
-						setState(CONFIRMED_NAME);
+						setOwner(command.getOwnerId());
+						setState(NEW_NAME);
 					}
-				} else {
-					setState(NEW_NAME);
+					break;
+				default:
+					break;
 				}
-				break;
-			case ENHANCEMENT:
-				if(getOwner().length() != 0) {
-					setState(WORKING_NAME);
-				} else {
-					setState(NEW_NAME);
-				}
-				break;
-			default:
-				break;
+				addNote(command.getNote());
+			} else {
+				throw new UnsupportedOperationException("Invalid information.");
 			}
-			addNote(command.getNote());
 		}
 
 		@Override
@@ -516,7 +524,7 @@ public class Issue {
 		public void updateState(Command command) {
 			switch(command.getCommand()) {
 			case VERIFY:
-				if (command.getResolution() == Command.Resolution.FIXED) {
+				if (resolution == Command.Resolution.FIXED) {
 					setState(CLOSED_NAME);
 				} else {
 					throw new UnsupportedOperationException("Invalid information.");
