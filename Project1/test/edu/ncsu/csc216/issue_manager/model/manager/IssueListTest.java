@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
-
+import edu.ncsu.csc216.issue_manager.model.command.Command;
 import edu.ncsu.csc216.issue_manager.model.issue.Issue;
 import edu.ncsu.csc216.issue_manager.model.issue.Issue.IssueType;
 
@@ -24,6 +24,8 @@ class IssueListTest {
 	
 	/**Note string */
 	private static final String NOTE = "notes";
+	
+	
 	
 	/**
 	 * Test method for IssueList constructor
@@ -93,8 +95,29 @@ class IssueListTest {
 	 */
 	@Test
 	public void testGetIssuesByType() {
+		Issue i1 = new Issue(12, IssueType.BUG, SUMMARY, NOTE);
+		Issue i2 = new Issue(30, IssueType.BUG, SUMMARY, NOTE);
+		Issue i3 = new Issue(45, IssueType.ENHANCEMENT, SUMMARY, NOTE);
+		Issue i4 = new Issue(25, IssueType.ENHANCEMENT, SUMMARY, NOTE);
+		ArrayList<Issue> issuesTest = new ArrayList<Issue>();
+		issuesTest.add(i1);
+		issuesTest.add(i2);
+		issuesTest.add(i3);
+		issuesTest.add(i4);
+		IssueList issueListTest = new IssueList();
+		issueListTest.addIssues(issuesTest);
 		
-        
+		ArrayList<Issue> issuesExpected = new ArrayList<Issue>();
+		issuesExpected.add(i1);
+		issuesExpected.add(i2);
+		IssueList issueListExpected = new IssueList();
+		issueListExpected.addIssues(issuesExpected);
+		
+		ArrayList<Issue> issueToTest = issueListTest.getIssuesByType(Issue.I_BUG);
+		assertEquals(issueListExpected.getIssues().size(), issueToTest.size(), "Incorrect issue list");
+		assertEquals(issueListExpected.getIssues().get(0), issueToTest.get(0), "Incorrect issue list");
+		assertEquals(issueListExpected.getIssues().get(1), issueToTest.get(1), "Incorrect issue list");
+		
 	}
 
 	/**
@@ -125,6 +148,25 @@ class IssueListTest {
 	 */
 	@Test
 	public void testExecuteCommand() {
+		ArrayList<String> notes = new ArrayList<String>();
+		notes.add("[New] Note 1");
+		notes.add("[Confirmed] Note 2");
+		Issue i1 = new Issue(12, Issue.NEW_NAME, Issue.I_ENHANCEMENT, SUMMARY, "", true, Command.R_DUPLICATE, notes);
+		Issue i2 = new Issue(30, Issue.WORKING_NAME, Issue.I_ENHANCEMENT, SUMMARY, "Onwer 2", true, Command.R_DUPLICATE, notes);
+		ArrayList<Issue> issuesTest = new ArrayList<Issue>();
+		issuesTest.add(i1);
+		issuesTest.add(i2);
+		IssueList issueList = new IssueList();
+		issueList.addIssues(issuesTest);
+		
+		Command c1 = new Command(Command.CommandValue.ASSIGN, "Owner 1", Command.Resolution.WONTFIX, NOTE);
+		
+		issueList.executeCommand(12, c1);
+		assertEquals(Issue.WORKING_NAME, i1.getStateName(), "Incorrect resolution");
+		assertEquals("Owner 1", i1.getOwner(), "Incorrect resolution");
+		assertEquals("- [New] Note 1\n"
+				+ "- [Confirmed] Note 2\n"
+				+ "- [Working] notes", i1.getNotesString(), "Incorrect notes");
 		
 	}
 
@@ -160,8 +202,6 @@ class IssueListTest {
 		assertEquals(1, issueList.getIssues().size(), "Incorrect size.");
 		assertEquals(1, issueList.getIssues().get(0).getIssueId(), "Incorrect id.");
 		
-		
-	
 	}
 
 }
