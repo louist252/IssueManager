@@ -172,7 +172,7 @@ public class Issue {
 			state = closedState;
 			break;
 		default:
-			break;
+			throw new IllegalArgumentException("Issue cannot be created.");
 		}
 	}
 	
@@ -193,7 +193,7 @@ public class Issue {
 			issueType = IssueType.BUG;
 			break;
 		default:
-			break;
+			throw new IllegalArgumentException("Issue cannot be created.");
 		}
 	}
 
@@ -213,9 +213,11 @@ public class Issue {
 	/**
 	 * Sets the owner
 	 * @param owner the owner to set
-	 * @throws IllegalArgumentException if owner is null or empty
 	 */
 	private void setOwner(String owner) {
+		if (owner == null) {
+			throw new IllegalArgumentException("Issue cannot be created.");
+		}
 		this.owner = owner;
 	}
 
@@ -233,7 +235,7 @@ public class Issue {
 	 * @throws IllegalArgumentException if r is null or empty
 	 */
 	private void setResolution(String r) {
-		if (r == null ) {
+		if (r == null) {
 			throw new IllegalArgumentException("Issue cannot be created.");
 		}
 		
@@ -251,6 +253,7 @@ public class Issue {
 			resolution = Resolution.WORKSFORME;
 			break;
 		default:
+			resolution = null;
 			break;
 		}
 	}
@@ -321,7 +324,7 @@ public class Issue {
 	 * @return the string of resolution
 	 */
 	public String getResolution() {
-		String r = null; 
+		String r = ""; 
 		switch(resolution) {
 		case FIXED:
 			r = Command.R_FIXED;
@@ -334,9 +337,12 @@ public class Issue {
 			break;
 		case WORKSFORME:
 			r = Command.R_WORKSFORME;
+			break;
 		default:
 			break;
 		}
+		
+		
 		
 		return r;
 	}
@@ -482,7 +488,7 @@ public class Issue {
 				}
 				break;
 			default:
-				throw new UnsupportedOperationException("Invalid information.");
+				break;
 			}
 			addNote(command.getNote());
 		}
@@ -510,11 +516,15 @@ public class Issue {
 		public void updateState(Command command) {
 			switch(command.getCommand()) {
 			case VERIFY:
-				setState(CLOSED_NAME);
+				if (command.getResolution() == Command.Resolution.FIXED) {
+					setState(CLOSED_NAME);
+				} else {
+					throw new UnsupportedOperationException("Invalid information.");
+				}
 				break;
 			case REOPEN:
 				setState(WORKING_NAME);
-				setResolution(null);
+				setResolution("");
 				break;
 			default:
 				throw new UnsupportedOperationException("Invalid information.");
@@ -545,7 +555,8 @@ public class Issue {
 		public void updateState(Command command) {
 			switch(command.getCommand()) {
 			case ASSIGN:
-				owner = command.getOwnerId();
+				setOwner(command.getOwnerId());
+				setConfirmed(true);
 				setState(WORKING_NAME);
 				break;
 			case RESOLVE:
@@ -586,8 +597,9 @@ public class Issue {
 			case ENHANCEMENT:
 				if(command.getCommand() == Command.CommandValue.ASSIGN) {
 					setState(WORKING_NAME);
-					owner = command.getOwnerId();
+					setOwner(command.getOwnerId());
 				} else if (command.getCommand() == Command.CommandValue.RESOLVE) {
+					resolution = command.getResolution();
 					setState(CLOSED_NAME);
 				} else {
 					throw new UnsupportedOperationException("Invalid information.");
@@ -597,13 +609,14 @@ public class Issue {
 				if (command.getCommand() == Command.CommandValue.CONFIRM) {
 					setState(CONFIRMED_NAME);
 				} else if (command.getCommand() == Command.CommandValue.RESOLVE){
+					resolution = command.getResolution();
 					setState(CLOSED_NAME);
 				} else {
 					throw new UnsupportedOperationException("Invalid information.");
 				}
 				break;
 			default:
-				throw new UnsupportedOperationException("Invalid information.");
+				break;
 			}
 			addNote(command.getNote());
 		}
@@ -631,19 +644,34 @@ public class Issue {
 		public void updateState(Command command) {
 			switch(command.getResolution()) {
 			case FIXED:
-				setState(VERIFYING_NAME);
+				if (command.getCommand() == Command.CommandValue.RESOLVE) {
+					setState(VERIFYING_NAME);
+					setResolution(Command.R_FIXED);
+				} else {
+					throw new UnsupportedOperationException("Invalid information.");
+				}
+				break;
 			case DUPLICATE:
 			case WONTFIX:
-				setState(CLOSED_NAME);
-			case WORKSFORME:
-				if (issueType == IssueType.BUG) {
+				if (command.getCommand() == Command.CommandValue.RESOLVE) {
 					setState(CLOSED_NAME);
 				} else {
 					throw new UnsupportedOperationException("Invalid information.");
 				}
 				break;
+			case WORKSFORME:
+				if (command.getCommand() == Command.CommandValue.RESOLVE) {
+					if (issueType == IssueType.BUG) {
+						setState(CLOSED_NAME);
+					} else {
+						throw new UnsupportedOperationException("Invalid information.");
+					}
+				} else {
+					throw new UnsupportedOperationException("Invalid information.");
+				}
+				break;
 			default:
-				throw new UnsupportedOperationException("Invalid information.");
+				break;
 			}
 			addNote(command.getNote());
 		}

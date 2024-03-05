@@ -75,7 +75,8 @@ public class CommandTest {
 				() -> assertEquals(ID, c5.getOwnerId(), "incorrect owner id"),
 				() -> assertEquals(Command.Resolution.WORKSFORME, c5.getResolution(), "incorrect resolution"),
 				() -> assertEquals(NOTE, c5.getNote(), "incorrect note"));
-
+		
+	
 		
 	}
 	
@@ -110,7 +111,7 @@ public class CommandTest {
 				() -> new Command(Command.CommandValue.ASSIGN, "", Command.Resolution.FIXED, NOTE));
 		assertEquals("Invalid information.", e5.getMessage(), "Incorrect exception thrown with empty owner Id " + "");
 		
-		//Test for null note
+		//Test for empty note
 		Exception e6 = assertThrows(IllegalArgumentException.class,
 				() -> new Command(Command.CommandValue.ASSIGN, ID, Command.Resolution.FIXED, ""));
 		assertEquals("Invalid information.", e6.getMessage(), "Incorrect exception thrown with empty note " + "");
