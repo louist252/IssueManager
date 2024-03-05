@@ -51,41 +51,36 @@ public class IssueReader {
 	 * @return an issue
 	 */
 	private static Issue processIssue(String line) {
-		try (Scanner scanner = new Scanner(line)){
-			scanner.useDelimiter(",");
-			int id = scanner.nextInt();
-			String state = scanner.next();
-			String type = scanner.next();
-			String summary =  scanner.next();
-			String owner = scanner.next();
-			boolean confirmed = scanner.nextBoolean();
-			String resolution = scanner.next();
-			String notes = "";
-			
-			while (scanner.hasNext()) {
-	            notes += scanner.next() + ",";
-	        }
-			
-			notes = notes.substring(0, notes.length() - 1);
-			
-			ArrayList<String> notesArray = new ArrayList<String>();
-			try (Scanner forNote = new Scanner(notes)){
-				forNote.useDelimiter("\\r?\\n?[-]");
-				while(forNote.hasNext()) {
-					String note = forNote.next().trim();
-					if(!note.isEmpty()) {
-						notesArray.add(note);
-					}
-				}
-			
-			forNote.close();
-			scanner.close();
-			}
-			Issue i = new Issue(id, state, type, summary, owner, confirmed, resolution, notesArray);
-			return i;
-			
-		} catch (Exception e) {
-			throw new IllegalArgumentException();
+		
+		Scanner scanner = new Scanner(line);
+		scanner.useDelimiter(",");
+		int id = scanner.nextInt();
+		String state = scanner.next();
+		String type = scanner.next();
+		String summary =  scanner.next();
+		String owner = scanner.next();
+		boolean confirmed = scanner.nextBoolean();
+		String resolution = "";
+		String notes = "";
+		
+		if (scanner.hasNext()) {
+			resolution = scanner.next();
 		}
+		
+		notes = line.substring(line.indexOf("\n") + 2);
+		Scanner forNotes = new Scanner(notes);
+		forNotes.useDelimiter("\r?\n?[-]");
+		
+		ArrayList<String> notesArray = new ArrayList<String>();
+		
+		while (forNotes.hasNext()) {
+            notesArray.add(forNotes.next());
+        }
+		
+		forNotes.close();
+		scanner.close();
+		Issue i = new Issue(id, state, type, summary, owner, confirmed, resolution, notesArray);
+		return i;
+	
 	}
 }

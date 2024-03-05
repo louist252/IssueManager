@@ -54,7 +54,7 @@ class IssueManagerTest {
 	 */
 	@Test
 	public void testLoadIssuesFromFile() {
-        assertDoesNotThrow(() -> manager.loadIssuesFromFile("test-files/issues.txt"));
+        assertDoesNotThrow(() -> manager.loadIssuesFromFile("test-files/issue1.txt"));
 	}
 
 	/**
