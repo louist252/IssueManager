@@ -98,8 +98,13 @@ public class Issue {
 		}
 		setIssueId(id);
 		setSummary(summary);
+		setState(Issue.NEW_NAME);
 		this.issueType = issueType;
 		addNote(note);
+		setNotes(notes);
+		setResolution("");
+		setConfirmed(false);
+		setOwner("");
 		
 		
 		
@@ -172,7 +177,7 @@ public class Issue {
 			state = closedState;
 			break;
 		default:
-			throw new IllegalArgumentException("Issue cannot be created.");
+			break;
 		}
 	}
 	
@@ -215,10 +220,11 @@ public class Issue {
 	 * @param owner the owner to set
 	 */
 	private void setOwner(String owner) {
-		if (owner == null) {
-			throw new IllegalArgumentException("Issue cannot be created.");
+		if (owner == null || owner.length() == 0) {
+			this.owner = "";
+		} else {
+			this.owner = owner;
 		}
-		this.owner = owner;
 	}
 
 	/**
@@ -238,7 +244,6 @@ public class Issue {
 		if (r == null) {
 			throw new IllegalArgumentException("Issue cannot be created.");
 		}
-		
 		switch(r) {
 		case Command.R_FIXED:
 			resolution = Resolution.FIXED;
@@ -256,6 +261,21 @@ public class Issue {
 			resolution = null;
 			break;
 		}
+		
+		/*
+		if (r == Command.R_FIXED) {
+			resolution = Resolution.FIXED;
+		} else if (r == Command.R_DUPLICATE) {
+			resolution = Resolution.DUPLICATE;
+		} else if (r == Command.R_WONTFIX) {
+			resolution = Resolution.WONTFIX;
+		} else if (r == Command.R_WORKSFORME) {
+			resolution = Resolution.WORKSFORME;
+		} else if (r == null || r.length() == 0) {
+			resolution = null;
+		}
+		*/
+		
 	}
 
 	/**
@@ -324,27 +344,20 @@ public class Issue {
 	 * @return the string of resolution
 	 */
 	public String getResolution() {
-		String r = ""; 
-		switch(resolution) {
-		case FIXED:
-			r = Command.R_FIXED;
-			break;
-		case DUPLICATE:
-			r = Command.R_DUPLICATE;
-			break;
-		case WONTFIX:
-			r = Command.R_WONTFIX;
-			break;
-		case WORKSFORME:
-			r = Command.R_WORKSFORME;
-			break;
-		default:
-			break;
+		
+		if (resolution == Resolution.FIXED) {
+			return Command.R_FIXED;
+		} else if (resolution == Resolution.DUPLICATE) {
+			return  Command.R_DUPLICATE;
+		} else if (resolution == Resolution.WONTFIX) {
+			return  Command.R_WONTFIX;
+		} else if (resolution == Resolution.WORKSFORME) {
+			return Command.R_WORKSFORME;
+		} else if (resolution == null) {
+			return  "";
 		}
 		
-		
-		
-		return r;
+		return null;
 	}
 
 	/**
@@ -378,9 +391,9 @@ public class Issue {
 	public String getNotesString() {
 		String noteString = "";
 		for (int i = 0; i < notes.size(); i++) {
-			noteString += "- " + notes.get(i) + '\n'; 
+			noteString += "-" + notes.get(i) + '\r' + '\n'; 
 		}
-		noteString = noteString.substring(0, noteString.length() - 1);
+		noteString = noteString.substring(0, noteString.length() - 2);
 		return noteString;
 	}
 	
@@ -397,8 +410,8 @@ public class Issue {
 	 * @return the string
 	 */
 	public String toString() {
-		return "* " + getIssueId() + "," + getStateName() + "," + getIssueType() + "," + getSummary() + "," + 
-				getOwner() +  "," + isConfirmed() + "," + getResolution() + "\n" + getNotesString();
+		return "*" + getIssueId() + "," + getStateName() + "," + getIssueType() + "," + getSummary() + "," + 
+				getOwner() +  "," + isConfirmed() + "," + getResolution() + "\r\n" + getNotesString();
 	}
 	
 	/**

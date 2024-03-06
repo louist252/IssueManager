@@ -31,7 +31,7 @@ public class IssueWriterTest {
 		notes.add("[Confirmed] Note 2");
 		notes.add("[Working] Note 3");
 		ArrayList<Issue> issues = new ArrayList<Issue>();
-		issues.add(new Issue(4, "Cloesd", "Bug", "Issue description", null, false, "WontFix", notes));
+		issues.add(new Issue(4, "Closed", "Bug", "Issue description", "", false, "WontFix", notes));
 		
 		try {
 			IssueWriter.writeIssuesToFile("test-files/actual_issue", issues);

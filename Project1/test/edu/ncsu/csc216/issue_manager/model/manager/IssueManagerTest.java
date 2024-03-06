@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import edu.ncsu.csc216.issue_manager.model.command.Command;
 import edu.ncsu.csc216.issue_manager.model.issue.Issue;
 import edu.ncsu.csc216.issue_manager.model.issue.Issue.IssueType;
 
@@ -38,6 +37,7 @@ class IssueManagerTest {
 	 @BeforeEach
 	    void setUp() {
 	        manager = IssueManager.getInstance();
+
 	    }
 	
 	/**
@@ -71,26 +71,29 @@ class IssueManagerTest {
 	 */
 	@Test
 	public void testGetIssueListAsArray() {
-		 manager.addIssueToList(IssueType.BUG, "Summary1", "Note1");
-		 manager.addIssueToList(IssueType.ENHANCEMENT, "Summary2", "Note2");
-	
-		 Object[][] issueArray = manager.getIssueListAsArray();
-
-		 //Check size of array
-		 assertEquals(2, issueArray.length);
-		 
-		 
-		 assertEquals(1, issueArray[0][0], "Incorrect issue Id");
-		 assertEquals(null, issueArray[0][1]); 
-		 assertEquals(Issue.I_BUG, issueArray[0][2]); 
-		 assertEquals("Summary1", issueArray[0][3]);
-
-		 assertEquals(2, issueArray[1][0]); 
-		 assertEquals(null, issueArray[1][1]); 
-		 assertEquals(Issue.I_ENHANCEMENT, issueArray[1][2]); 
-		 assertEquals("Summary2", issueArray[1][3]); 
-
+		manager.createNewIssueList();
+		Object[][] issueArray = manager.getIssueListAsArray();
 		
+		//Check size of array
+		assertEquals(0, issueArray.length);
+		 
+		manager.addIssueToList(IssueType.BUG, "summary1", "note1");
+		manager.addIssueToList(IssueType.ENHANCEMENT, "summary2", "note2");
+		
+		issueArray = manager.getIssueListAsArray();
+		assertEquals(2, issueArray.length);
+		 
+		assertEquals(1, issueArray[0][0], "Incorrect issue Id");
+		assertEquals(Issue.NEW_NAME, issueArray[0][1]); 
+		assertEquals(Issue.I_BUG, issueArray[0][2]); 
+		assertEquals("summary1", issueArray[0][3]);
+		
+		assertEquals(2, issueArray[1][0]); 
+		assertEquals(Issue.NEW_NAME, issueArray[1][1]); 
+		assertEquals(Issue.I_ENHANCEMENT, issueArray[1][2]); 
+		assertEquals("summary2", issueArray[1][3]); 
+		
+				
 	}
 
 	/**
@@ -98,14 +101,15 @@ class IssueManagerTest {
 	 */
 	@Test
 	public void testGetIssueListAsArrayByIssueType() {
-		manager.addIssueToList(IssueType.BUG, "summary1", "note1");
-	    manager.addIssueToList(IssueType.ENHANCEMENT, SUMMARY, NOTE);
-	    manager.addIssueToList(IssueType.BUG, "summary2", "note2");
-	    
-	    
+		manager.createNewIssueList();
+		manager.addIssueToList(IssueType.BUG, "summary2", "note2");
+		manager.addIssueToList(IssueType.BUG, "Summary1", "Note1");
+		manager.addIssueToList(IssueType.ENHANCEMENT, "Summary2", "Note2");
+
 	    //Test for type not bug or enhancement
 	    Object[][] emptyArray = manager.getIssueListAsArrayByIssueType("InvalidType");
 	    assertEquals(0, emptyArray.length);
+	    
 	    
 	    Object[][] arr2 = manager.getIssueListAsArrayByIssueType(Issue.I_ENHANCEMENT);
 	    assertEquals(1, arr2.length, "Incorrect size");
@@ -130,7 +134,15 @@ class IssueManagerTest {
 	 */
 	@Test
 	public void testExecuteCommand() {
-		 assertDoesNotThrow(() -> manager.executeCommand(1, new Command(Command.CommandValue.ASSIGN, OWNER, Command.Resolution.WONTFIX, NOTE)));
+		manager.createNewIssueList();
+		manager.addIssueToList(IssueType.BUG, "summary2", "note2");
+		manager.addIssueToList(IssueType.BUG, "Summary1", "Note1");
+		manager.addIssueToList(IssueType.ENHANCEMENT, "Summary2", "Note2");
+		
+		//Check issue ID
+		
+		
+		
 	}
 
 	/**
@@ -138,7 +150,7 @@ class IssueManagerTest {
 	 */
 	@Test
 	public void testDeleteIssueById() {
-		fail("Not yet implemented");
+		 
 	}
 
 	

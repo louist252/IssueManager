@@ -164,9 +164,9 @@ class IssueListTest {
 		issueList.executeCommand(12, c1);
 		assertEquals(Issue.WORKING_NAME, i1.getStateName(), "Incorrect resolution");
 		assertEquals("Owner 1", i1.getOwner(), "Incorrect resolution");
-		assertEquals("- [New] Note 1\n"
-				+ "- [Confirmed] Note 2\n"
-				+ "- [Working] notes", i1.getNotesString(), "Incorrect notes");
+		assertEquals("-[New] Note 1\r\n"
+				+ "-[Confirmed] Note 2\r\n"
+				+ "-[Working] notes", i1.getNotesString(), "Incorrect notes");
 		
 	}
 

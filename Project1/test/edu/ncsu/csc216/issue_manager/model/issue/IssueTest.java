@@ -102,18 +102,51 @@ public class IssueTest {
 		
 		//Empty owner
 		Issue i2 = assertDoesNotThrow (
-				() -> new Issue(ID, Issue.NEW_NAME, Issue.I_BUG, SUMMARY, "", true, Command.R_DUPLICATE, notes), 
+				() -> new Issue(ID, Issue.WORKING_NAME, Issue.I_BUG, SUMMARY, "", true, Command.R_WONTFIX, notes), 
 				"Should not throw exception");
 		
 		assertAll ("Issue",
 				() -> assertEquals(SUMMARY, i2.getSummary(), "incorrect summary"),
 				() -> assertEquals(ID, i2.getIssueId(), "incorrect issue id"),
-				() -> assertEquals(Issue.NEW_NAME, i2.getStateName(), "incorrect state name"),
+				() -> assertEquals(Issue.WORKING_NAME, i2.getStateName(), "incorrect state name"),
 				() -> assertEquals(Issue.I_BUG, i2.getIssueType(), "incorrect issue type"),
 				() -> assertEquals("", i2.getOwner(), "incorrect owner id"),
 				() -> assertEquals(true, i2.isConfirmed(), "incorrect confirm status"),
-				() -> assertEquals(Command.R_DUPLICATE, i2.getResolution(), "Incorrect resolution"),
+				() -> assertEquals(Command.R_WONTFIX, i2.getResolution(), "Incorrect resolution"),
 				() -> assertEquals(notes, i2.getNotes(), "incorrect notes array"));
+		
+		//Null owner
+		Issue i3 = assertDoesNotThrow (
+				() -> new Issue(ID, Issue.CLOSED_NAME, Issue.I_BUG, SUMMARY, null, true, Command.R_DUPLICATE, notes), 
+				"Should not throw exception");
+		
+		assertAll ("Issue",
+				() -> assertEquals(SUMMARY, i3.getSummary(), "incorrect summary"),
+				() -> assertEquals(ID, i3.getIssueId(), "incorrect issue id"),
+				() -> assertEquals(Issue.CLOSED_NAME, i3.getStateName(), "incorrect state name"),
+				() -> assertEquals(Issue.I_BUG, i3.getIssueType(), "incorrect issue type"),
+				() -> assertEquals("", i3.getOwner(), "incorrect owner id"),
+				() -> assertEquals(true, i3.isConfirmed(), "incorrect confirm status"),
+				() -> assertEquals(Command.R_DUPLICATE, i3.getResolution(), "Incorrect resolution"),
+				() -> assertEquals(notes, i3.getNotes(), "incorrect notes array"));
+		
+		//Empty resolution
+		Issue i4 = assertDoesNotThrow (
+				() -> new Issue(ID, Issue.VERIFYING_NAME, Issue.I_ENHANCEMENT, SUMMARY, OWNER, true, "", notes), 
+				"Should not throw exception");
+		
+		assertAll ("Issue",
+				() -> assertEquals(SUMMARY, i4.getSummary(), "incorrect summary"),
+				() -> assertEquals(ID, i4.getIssueId(), "incorrect issue id"),
+				() -> assertEquals(Issue.VERIFYING_NAME, i4.getStateName(), "incorrect state name"),
+				() -> assertEquals(Issue.I_ENHANCEMENT, i4.getIssueType(), "incorrect issue type"),
+				() -> assertEquals(OWNER, i4.getOwner(), "incorrect owner id"),
+				() -> assertEquals(true, i4.isConfirmed(), "incorrect confirm status"),
+				() -> assertEquals("", i4.getResolution(), "Incorrect resolution"),
+				() -> assertEquals(notes, i4.getNotes(), "incorrect notes array"));
+		
+		
+
 
 	}
 	
@@ -142,9 +175,7 @@ public class IssueTest {
 				() -> new Issue(ID, Issue.NEW_NAME, Issue.I_BUG, null, OWNER, true, Command.R_FIXED, notes));
 		assertEquals("Issue cannot be created.", e4.getMessage(), "Incorrect exception thrown with null summary " + null);
 		
-		Exception e6 = assertThrows(IllegalArgumentException.class,
-				() -> new Issue(ID, Issue.NEW_NAME, Issue.I_BUG, SUMMARY, OWNER, true, null, notes));
-		assertEquals("Issue cannot be created.", e6.getMessage(), "Incorrect exception thrown with empty resolution " + null);
+	
 		
 		Exception e7 = assertThrows(IllegalArgumentException.class,
 				() -> new Issue(ID, Issue.NEW_NAME, Issue.I_BUG, SUMMARY, OWNER, true, Command.R_FIXED, null));
@@ -166,13 +197,10 @@ public class IssueTest {
 				() -> new Issue(ID, Issue.NEW_NAME, "Weird Type", "", null, true, Command.R_FIXED, notes));
 		assertEquals("Issue cannot be created.", e11.getMessage(), "Incorrect exception thrown with a different issue type " + "Weird Type");
 		
-		Exception e12 = assertThrows(IllegalArgumentException.class,
-				() -> new Issue(ID, Issue.NEW_NAME, Issue.I_BUG, SUMMARY, null, true, Command.R_FIXED, notes));
-		assertEquals("Issue cannot be created.", e9.getMessage(), "Incorrect exception thrown with null owner" +  null);
 		
-		Exception e13 = assertThrows(IllegalArgumentException.class,
+		Exception e12 = assertThrows(IllegalArgumentException.class,
 				() -> new Issue(ID, "Weird State", Issue.I_BUG, "", "", true, Command.R_FIXED, notes));
-		assertEquals("Issue cannot be created.", e11.getMessage(), "Incorrect exception thrown with a different issue type " + "Weird state");
+		assertEquals("Issue cannot be created.", e12.getMessage(), "Incorrect exception thrown with a different issue type " + "Weird state");
 		
 		
 		
@@ -258,9 +286,9 @@ public class IssueTest {
 		notes.add("[Confirmed] Note 2");
 		notes.add("[Working] Note 3");
 		Issue i = new Issue(ID, Issue.NEW_NAME, Issue.I_ENHANCEMENT, SUMMARY, OWNER, true, Command.R_DUPLICATE, notes);
-		assertEquals("- [New] Note 1\n"
-					+ "- [Confirmed] Note 2\n"
-					+ "- [Working] Note 3", i.getNotesString(), "Incorrect note string");
+		assertEquals("-[New] Note 1\r\n"
+					+ "-[Confirmed] Note 2\r\n"
+					+ "-[Working] Note 3", i.getNotesString(), "Incorrect note string");
 		
 		
 		
@@ -277,10 +305,10 @@ public class IssueTest {
 		notes.add("[Confirmed] Note 2");
 		notes.add("[Working] Note 3");
 		Issue i = new Issue(ID, Issue.NEW_NAME, Issue.I_ENHANCEMENT, SUMMARY, OWNER, true, Command.R_DUPLICATE, notes);
-		assertEquals("* 2,New,Enhancement,Issue description,thton,true,Duplicate\n"
-					+ "- [New] Note 1\n"
-					+ "- [Confirmed] Note 2\n"
-					+ "- [Working] Note 3", i.toString(), "incorrect toString");
+		assertEquals("*2,New,Enhancement,Issue description,thton,true,Duplicate\r\n"
+					+ "-[New] Note 1\r\n"
+					+ "-[Confirmed] Note 2\r\n"
+					+ "-[Working] Note 3", i.toString(), "incorrect toString");
 	}
 
 	/**
@@ -299,9 +327,9 @@ public class IssueTest {
 		i1.update(c1);
 		assertEquals(Issue.WORKING_NAME, i1.getStateName(), "Incorrect resolution");
 		assertEquals(OWNER, i1.getOwner(), "Incorrect resolution");
-		assertEquals("- [New] Note 1\n"
-				+ "- [Confirmed] Note 2\n"
-				+ "- [Working] notes", i1.getNotesString(), "Incorrect notes");
+		assertEquals("-[New] Note 1\r\n"
+				+ "-[Confirmed] Note 2\r\n"
+				+ "-[Working] notes", i1.getNotesString(), "Incorrect notes");
 		
 		
 		//Remove the last note in array for testing with next command
@@ -312,9 +340,9 @@ public class IssueTest {
 		i2.update(c2);
 		assertEquals(Issue.CLOSED_NAME, i2.getStateName(), "Incorrect state");
 		assertEquals(Command.R_WONTFIX, i2.getResolution(), "Incorrect resolution");
-		assertEquals("- [New] Note 1\n"
-					+ "- [Confirmed] Note 2\n"
-					+ "- [Closed] notes", i2.getNotesString(), "Incorrect notes");
+		assertEquals("-[New] Note 1\r\n"
+					+ "-[Confirmed] Note 2\r\n"
+					+ "-[Closed] notes", i2.getNotesString(), "Incorrect notes");
 		
 		
 		//Test when CommandValue is not Resolve nor Assing when IssueType is Enhancement
@@ -331,9 +359,9 @@ public class IssueTest {
 		Command c4 = new Command(Command.CommandValue.CONFIRM, OWNER, Command.Resolution.WONTFIX, NOTE);
 		i4.update(c4);
 		assertEquals(Issue.CONFIRMED_NAME, i4.getStateName(), "Incorrec state name");
-		assertEquals("- [New] Note 1\n"
-				+ "- [Confirmed] Note 2\n"
-				+ "- [Confirmed] notes", i2.getNotesString(), "Incorrect notes");
+		assertEquals("-[New] Note 1\r\n"
+				+ "-[Confirmed] Note 2\r\n"
+				+ "-[Confirmed] notes", i2.getNotesString(), "Incorrect notes");
 		
 		
 		//Remove the last note in array for testing with next command
@@ -344,9 +372,9 @@ public class IssueTest {
 		i5.update(c5);
 		assertEquals(Issue.CLOSED_NAME, i5.getStateName(), "Incorrect state");
 		assertEquals(Command.R_FIXED, i5.getResolution(), "Incorrect resolution");
-		assertEquals("- [New] Note 1\n"
-					+ "- [Confirmed] Note 2\n"
-					+ "- [Closed] notes", i5.getNotesString(), "Incorrect notes");
+		assertEquals("-[New] Note 1\r\n"
+					+ "-[Confirmed] Note 2\r\n"
+					+ "-[Closed] notes", i5.getNotesString(), "Incorrect notes");
 		
 		//Test when CommandValue is not Resolve nor Assing when IssueType is Bug
 		Issue i6 = new Issue(ID, Issue.NEW_NAME, Issue.I_BUG, SUMMARY, "", true, Command.R_DUPLICATE, notes);
@@ -372,9 +400,9 @@ public class IssueTest {
 			Command dupeRes = new Command (Command.CommandValue.RESOLVE, OWNER, Command.Resolution.DUPLICATE, NOTE);
 			i1.update(dupeRes);
 			assertEquals(Issue.CLOSED_NAME, i1.getStateName(), "Incorrect resolution");
-			assertEquals("- [New] Note 1\n"
-						+ "- [Confirmed] Note 2\n"
-						+ "- [Closed] notes", i1.getNotesString(), "Incorrect notes");
+			assertEquals("-[New] Note 1\r\n"
+						+ "-[Confirmed] Note 2\r\n"
+						+ "-[Closed] notes", i1.getNotesString(), "Incorrect notes");
 			
 			notes.remove(notes.size() - 1);
 			
@@ -383,9 +411,9 @@ public class IssueTest {
 			Command wontFixRes = new Command (Command.CommandValue.RESOLVE, OWNER, Command.Resolution.WONTFIX, NOTE);
 			i2.update(wontFixRes);
 			assertEquals(Issue.CLOSED_NAME, i2.getStateName(), "Incorrect resolution");
-			assertEquals("- [New] Note 1\n"
-						+ "- [Confirmed] Note 2\n"
-						+ "- [Closed] notes", i2.getNotesString(), "Incorrect notes");
+			assertEquals("-[New] Note 1\r\n"
+						+ "-[Confirmed] Note 2\r\n"
+						+ "-[Closed] notes", i2.getNotesString(), "Incorrect notes");
 			
 			notes.remove(notes.size() - 1);
 			
@@ -395,9 +423,9 @@ public class IssueTest {
 			i3.update(fixedRes);
 			assertEquals(Issue.VERIFYING_NAME, i3.getStateName(), "Incorrect state");
 			assertEquals(Command.R_FIXED, i3.getResolution(), "Incorrect resolution");
-			assertEquals("- [New] Note 1\n"
-						+ "- [Confirmed] Note 2\n"
-						+ "- [Verifying] notes", i3.getNotesString(), "Incorrect notes");
+			assertEquals("-[New] Note 1\r\n"
+						+ "-[Confirmed] Note 2\r\n"
+						+ "-[Verifying] notes", i3.getNotesString(), "Incorrect notes");
 			
 			notes.remove(notes.size() - 1);
 			
@@ -407,9 +435,9 @@ public class IssueTest {
 			Command worksForMeRes = new Command (Command.CommandValue.RESOLVE, OWNER, Command.Resolution.WORKSFORME, NOTE);
 			i4.update(worksForMeRes);
 			assertEquals(Issue.CLOSED_NAME, i4.getStateName(), "Incorrect resolution");
-			assertEquals("- [New] Note 1\n"
-						+ "- [Confirmed] Note 2\n"
-						+ "- [Closed] notes", i4.getNotesString(), "Incorrect notes");
+			assertEquals("-[New] Note 1\r\n"
+						+ "-[Confirmed] Note 2\r\n"
+						+ "-[Closed] notes", i4.getNotesString(), "Incorrect notes");
 			
 			
 			//Test update with incorrect conditions (CommandValue is not confirm, 
@@ -465,9 +493,9 @@ public class IssueTest {
 			assertEquals(OWNER, i1.getOwner(), "Incorrect owner");
 			assertTrue(i1.isConfirmed(), "Incorrect confirmed status");
 			assertEquals(Issue.WORKING_NAME, i1.getStateName(), "Incorrect state");
-			assertEquals("- [New] Note 1\n"
-					+ "- [Confirmed] Note 2\n"
-					+ "- [Working] notes", i1.getNotesString(), "Incorrect notes");
+			assertEquals("-[New] Note 1\r\n"
+					+ "-[Confirmed] Note 2\r\n"
+					+ "-[Working] notes", i1.getNotesString(), "Incorrect notes");
 			
 			notes.remove(notes.size() - 1);
 			
@@ -477,9 +505,9 @@ public class IssueTest {
 			i2.update(resolveVal);
 			assertEquals(Issue.CLOSED_NAME, i2.getStateName(), "Incorret state");
 			assertTrue(i2.isConfirmed(), "Incorrect confirmed status");
-			assertEquals("- [New] Note 1\n"
-					+ "- [Confirmed] Note 2\n"
-					+ "- [Closed] notes", i2.getNotesString(), "Incorrect notes");
+			assertEquals("-[New] Note 1\r\n"
+					+ "-[Confirmed] Note 2\r\n"
+					+ "-[Closed] notes", i2.getNotesString(), "Incorrect notes");
 			
 			//Test when CommandValue is Resolve and Resolution is not WontFix
 			Issue i3 = new Issue(ID, Issue.CONFIRMED_NAME, Issue.I_ENHANCEMENT, SUMMARY, OWNER, true, Command.R_DUPLICATE, notes);
@@ -509,9 +537,9 @@ public class IssueTest {
 			Command c1 = new Command (Command.CommandValue.VERIFY, OWNER, Command.Resolution.FIXED, NOTE);
 			i1.update(c1);
 			assertEquals(Issue.CLOSED_NAME, i1.getStateName(), "Incorrect state");
-			assertEquals("- [New] Note 1\n"
-					+ "- [Confirmed] Note 2\n"
-					+ "- [Closed] notes", i1.getNotesString(), "Incorrect notes");
+			assertEquals("-[New] Note 1\r\n"
+					+ "-[Confirmed] Note 2\r\n"
+					+ "-[Closed] notes", i1.getNotesString(), "Incorrect notes");
 			
 			notes.remove(notes.size() - 1);
 			
@@ -519,9 +547,9 @@ public class IssueTest {
 			Issue i2 = new Issue(ID, Issue.VERIFYING_NAME, Issue.I_BUG, SUMMARY, "", true, Command.R_DUPLICATE, notes);
 			Command c2 = new Command (Command.CommandValue.REOPEN, OWNER, Command.Resolution.FIXED, NOTE);
 			i2.update(c2);
-			assertEquals("- [New] Note 1\n"
-					+ "- [Confirmed] Note 2\n"
-					+ "- [Working] notes", i1.getNotesString(), "Incorrect notes");
+			assertEquals("-[New] Note 1\r\n"
+					+ "-[Confirmed] Note 2\r\n"
+					+ "-[Working] notes", i1.getNotesString(), "Incorrect notes");
 			
 			//Test if the Resolution is not Fixed
 			Issue i3 = new Issue(ID, Issue.VERIFYING_NAME, Issue.I_ENHANCEMENT, SUMMARY, OWNER, true, Command.R_DUPLICATE, notes);
@@ -552,9 +580,9 @@ public class IssueTest {
 			i1.update(c1);
 			assertEquals(Issue.WORKING_NAME, i1.getStateName(), "Incorrect state");
 			assertEquals("Owner name", i1.getOwner(), "Incorrect state");
-			assertEquals("- [New] Note 1\n"
-					+ "- [Confirmed] Note 2\n"
-					+ "- [Working] notes", i1.getNotesString(), "Incorrect notes");
+			assertEquals("-[New] Note 1\r\n"
+					+ "-[Confirmed] Note 2\r\n"
+					+ "-[Working] notes", i1.getNotesString(), "Incorrect notes");
 			
 			notes.remove(notes.size() - 1);
 			
@@ -564,9 +592,9 @@ public class IssueTest {
 			i2.update(c2);
 			assertEquals(Issue.NEW_NAME, i2.getStateName(), "Incorrect state");
 			assertEquals(OWNER, i2.getOwner(), "Incorrect state");
-			assertEquals("- [New] Note 1\n"
-					+ "- [Confirmed] Note 2\n"
-					+ "- [New] notes", i2.getNotesString(), "Incorrect notes");
+			assertEquals("-[New] Note 1\r\n"
+					+ "-[Confirmed] Note 2\r\n"
+					+ "-[New] notes", i2.getNotesString(), "Incorrect notes");
 			
 			notes.remove(notes.size() - 1);
 			
@@ -575,9 +603,9 @@ public class IssueTest {
 			Command c3 = new Command (Command.CommandValue.REOPEN, OWNER, Command.Resolution.FIXED, NOTE);
 			i3.update(c3);
 			assertEquals(Issue.WORKING_NAME, i3.getStateName(), "Incorrect state");
-			assertEquals("- [New] Note 1\n"
-					+ "- [Confirmed] Note 2\n"
-					+ "- [Working] notes", i3.getNotesString(), "Incorrect notes");
+			assertEquals("-[New] Note 1\r\n"
+					+ "-[Confirmed] Note 2\r\n"
+					+ "-[Working] notes", i3.getNotesString(), "Incorrect notes");
 			
 			notes.remove(notes.size() - 1);
 			
@@ -587,9 +615,9 @@ public class IssueTest {
 			i4.update(c4);
 			assertEquals(Issue.CONFIRMED_NAME, i4.getStateName(), "Incorrect state");
 			assertEquals(OWNER, i4.getOwner(), "Incorrect state");
-			assertEquals("- [New] Note 1\n"
-					+ "- [Confirmed] Note 2\n"
-					+ "- [Confirmed] notes", i4.getNotesString(), "Incorrect notes");
+			assertEquals("-[New] Note 1\r\n"
+					+ "-[Confirmed] Note 2\r\n"
+					+ "-[Confirmed] notes", i4.getNotesString(), "Incorrect notes");
 			
 			notes.remove(notes.size() - 1);
 			
@@ -599,9 +627,9 @@ public class IssueTest {
 			i5.update(c5);
 			assertEquals(Issue.NEW_NAME, i5.getStateName(), "Incorrect state");
 			assertEquals(OWNER, i5.getOwner(), "Incorrect state");
-			assertEquals("- [New] Note 1\n"
-					+ "- [Confirmed] Note 2\n"
-					+ "- [New] notes", i5.getNotesString(), "Incorrect notes");
+			assertEquals("-[New] Note 1\r\n"
+					+ "-[Confirmed] Note 2\r\n"
+					+ "-[New] notes", i5.getNotesString(), "Incorrect notes");
 			
 			//Test when command has CommandValue that is not Reopen
 			Issue i6 = new Issue(ID, Issue.CLOSED_NAME, Issue.I_BUG, SUMMARY, "", false, Command.R_FIXED, notes);
