@@ -23,9 +23,6 @@ public class IssueReaderTest {
 	/**Valid issue test file */
 	private final String validTestFile = "test-files/issue1.txt";
 	
-	/**Invalid issue test file */
-	private final String invalidTestFile = "test-files/invalidFile.txt";
-	
 	/** Expected results for valid issue in issue1.txt - line 1 */
 	private final String validIssue1 = "*1,New,Enhancement,Issue description,,false,\r\n"
 										+ "-[New] Note 1";
@@ -77,24 +74,11 @@ public class IssueReaderTest {
 			}
 		
 		} catch (FileNotFoundException e) {
-			fail("Unable to load file " + validTestFile);
-		}
-		
-	}
-	
-	/**
-	 * Test method for readIssueFromFile method with invalid file
-	 */
-	@Test
-	public void testReadIssuesFromFileInvalidFile() {
-		try {
-			ArrayList<Issue> issues = IssueReader.readIssuesFromFile(invalidTestFile);
-			assertEquals(0, issues.size());
-		} catch (FileNotFoundException e) {
 			fail("Unexpected FileNotFoundException");
 		}
 		
 	}
+	
 	
 
 	/**

@@ -34,7 +34,7 @@ public class IssueWriterTest {
 		issues.add(new Issue(4, "Closed", "Bug", "Issue description", "", false, "WontFix", notes));
 		
 		try {
-			IssueWriter.writeIssuesToFile("test-files/actual_issue", issues);
+			IssueWriter.writeIssuesToFile("test-files/actual_issue.txt", issues);
 		} catch (IOException e) {
 			fail("Cannot write to course records file");
 		}
