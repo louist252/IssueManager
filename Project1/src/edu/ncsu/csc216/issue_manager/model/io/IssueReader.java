@@ -30,7 +30,7 @@ public class IssueReader {
 				
 			}
 			scan.close();
-		} catch (IllegalArgumentException e){
+		} catch (FileNotFoundException e){
 			 throw new IllegalArgumentException("File not found");
 		}
 		
