@@ -6,12 +6,15 @@ package edu.ncsu.csc216.issue_manager.model.io;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 
 import org.junit.jupiter.api.Test;
 
+import edu.ncsu.csc216.issue_manager.model.command.Command;
 import edu.ncsu.csc216.issue_manager.model.issue.Issue;
+import edu.ncsu.csc216.pack_scheduler.io.StudentRecordIO;
 
 
 /**
@@ -90,6 +93,10 @@ public class IssueReaderTest {
 		} catch (Exception e) {
 			fail("Unexpected FileNotFoundException");
 		}
+		
+		Exception exception = assertThrows(IllegalArgumentException.class, 
+				() -> IssueReader.readIssuesFromFile("Invalid file"));
+		assertEquals("File not found", exception.getMessage());
 		
 	}
 	
