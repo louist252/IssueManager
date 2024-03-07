@@ -104,6 +104,7 @@ public class IssueReaderTest {
 	/**
 	 * Test constructor
 	 */
+	@Test
 	public void testConstructor() {
 		assertDoesNotThrow(() -> new IssueReader());
 	}
