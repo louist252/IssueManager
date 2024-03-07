@@ -21,19 +21,23 @@ public class IssueReader {
 	 */
 	public static ArrayList<Issue> readIssuesFromFile(String filename) throws FileNotFoundException {
 		ArrayList<Issue> issueList = new ArrayList<Issue>();
-		try (Scanner scan = new Scanner(new File(filename))) {
-			scan.useDelimiter("\\r?\\n?[*]");
-			while(scan.hasNext()) {
-				String issueString = scan.next();
-				Issue issue = processIssue(issueString);
-				issueList.add(issue);
-				
+		File file = new File (filename);
+		if (file.exists()) {
+			try (Scanner scan = new Scanner(file)) {
+				scan.useDelimiter("\\r?\\n?[*]");
+				while(scan.hasNext()) {
+					String issueString = scan.next();
+					Issue issue = processIssue(issueString);
+					issueList.add(issue);
+					
+				}
+				scan.close();
+			} catch (FileNotFoundException e){
+				 //
 			}
-			scan.close();
-		} catch (FileNotFoundException e){
-			 throw new IllegalArgumentException("File not found");
+		} else {
+			throw new IllegalArgumentException("File not found");
 		}
-		
 		return issueList;
 	}
 	

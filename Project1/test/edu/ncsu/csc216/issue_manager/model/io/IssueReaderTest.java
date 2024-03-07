@@ -79,7 +79,7 @@ public class IssueReaderTest {
 		
 	}
 	
-	/*
+	/**
 	 * Test with an invalid file
 	 */
 	@Test
