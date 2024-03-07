@@ -101,6 +101,12 @@ public class IssueReaderTest {
 		
 	}
 	
+	/**
+	 * Test constructor
+	 */
+	public void testConstructor() {
+		assertDoesNotThrow(() -> new IssueReader());
+	}
 	
 
 }
