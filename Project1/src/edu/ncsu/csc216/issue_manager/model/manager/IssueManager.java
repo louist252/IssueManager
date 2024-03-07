@@ -59,7 +59,7 @@ public class IssueManager {
 	public void loadIssuesFromFile(String filename) {
 		try {
 			issueList.addIssues(IssueReader.readIssuesFromFile(filename));
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
 			throw new IllegalArgumentException();
 		}
 	}
