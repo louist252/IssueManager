@@ -34,7 +34,7 @@ public class IssueWriter {
 			}
 			fileWriter.close();
 		} catch (FileNotFoundException e) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("File Not Found");
 		}
 		
 	}

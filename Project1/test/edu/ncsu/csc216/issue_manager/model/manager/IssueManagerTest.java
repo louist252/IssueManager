@@ -74,6 +74,10 @@ class IssueManagerTest {
 		assertEquals(Issue.WORKING_NAME, arr[0][1]); 
 		assertEquals(Issue.I_BUG, arr[0][2]); 
 		assertEquals(SUMMARY, arr[0][3]);
+	
+		Exception exception = assertThrows(IllegalArgumentException.class, 
+				() -> manager.loadIssuesFromFile("Invalid file location"));
+		assertEquals("Invalid file", exception.getMessage());
         
         
 	}
