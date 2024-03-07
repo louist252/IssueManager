@@ -3,6 +3,7 @@ package edu.ncsu.csc216.issue_manager.model.io;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import edu.ncsu.csc216.issue_manager.model.issue.Issue;
 
@@ -22,22 +23,19 @@ public class IssueReader {
 	 * @param filename the file to read
 	 * @return an array of Issues
 	 */
-	public static ArrayList<Issue> readIssuesFromFile(String filename) {
+	public static ArrayList<Issue> readIssuesFromFile(String filename) throws FileNotFoundException {
 		ArrayList<Issue> issueList = new ArrayList<Issue>();
 		try (Scanner scan = new Scanner(new File(filename))) {
 			scan.useDelimiter("\\r?\\n?[*]");
 			while(scan.hasNext()) {
 				String issueString = scan.next();
-				try {
-					Issue issue = processIssue(issueString);
-					issueList.add(issue);
-				} catch (Exception e) {
-					//For other class
-				}
+				Issue issue = processIssue(issueString);
+				issueList.add(issue);
+				
 			}
 			scan.close();
 		} catch (Exception e){
-			 throw new IllegalArgumentException("Unable to load file.");
+			 //Allowed to be propogate
 		}
 		
 		return issueList;
