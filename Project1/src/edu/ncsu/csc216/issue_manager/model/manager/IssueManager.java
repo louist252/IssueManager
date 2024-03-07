@@ -48,7 +48,7 @@ public class IssueManager {
 		try {
 			IssueWriter.writeIssuesToFile(filename, issueList.getIssues());
 		} catch (IOException e) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Unable to save file");
 		}
 	}
 	
@@ -59,7 +59,7 @@ public class IssueManager {
 	public void loadIssuesFromFile(String filename) {
 		try {
 			issueList.addIssues(IssueReader.readIssuesFromFile(filename));
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
 			throw new IllegalArgumentException();
 		}
 	}
