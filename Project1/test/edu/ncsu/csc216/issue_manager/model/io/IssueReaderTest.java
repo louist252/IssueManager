@@ -79,6 +79,20 @@ public class IssueReaderTest {
 		
 	}
 	
+	/*
+	 * Test with an invalid file
+	 */
+	@Test
+	public void testReadIssuesFromInvalidFile() {
+		try {
+			ArrayList<Issue> issues = IssueReader.readIssuesFromFile("test-files/invalid_test_file.txt");
+			assertEquals(0, issues.size(), "Incorrect length");
+		} catch (FileNotFoundException e) {
+			fail("Unexpected FileNotFoundException");
+		}
+		
+	}
+	
 	
 
 }
