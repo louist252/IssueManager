@@ -19,7 +19,7 @@ public class IssueReader {
 	 * @return an array of Issues
 	 * @throws FileNotFoundException if the file is not found
 	 */
-	public static ArrayList<Issue> readIssuesFromFile(String filename) throws FileNotFoundException {
+	public static ArrayList<Issue> readIssuesFromFile(String filename) {
 		ArrayList<Issue> issueList = new ArrayList<Issue>();
 		File file = new File (filename);
 		if (file.exists()) {

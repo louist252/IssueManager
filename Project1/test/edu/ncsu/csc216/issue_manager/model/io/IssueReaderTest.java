@@ -73,7 +73,7 @@ public class IssueReaderTest {
 				assertEquals(validIssues[i], issues.get(i).toString());
 			}
 		
-		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
 			fail("Unexpected FileNotFoundException");
 		}
 		
@@ -87,7 +87,7 @@ public class IssueReaderTest {
 		try {
 			ArrayList<Issue> issues = IssueReader.readIssuesFromFile("test-files/invalid_test_file.txt");
 			assertEquals(0, issues.size(), "Incorrect length");
-		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
 			fail("Unexpected FileNotFoundException");
 		}
 		
