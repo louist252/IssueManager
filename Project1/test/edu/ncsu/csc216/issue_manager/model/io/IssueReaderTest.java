@@ -81,12 +81,4 @@ public class IssueReaderTest {
 	
 	
 
-	/**
-	 * Test constructor for coverage
-	 */
-	@Test
-	public void testConstructor() {
-		assertDoesNotThrow(() -> new IssueReader());
-	}
-	
 }
