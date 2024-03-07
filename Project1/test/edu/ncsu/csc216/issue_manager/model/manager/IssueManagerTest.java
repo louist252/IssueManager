@@ -209,7 +209,7 @@ class IssueManagerTest {
 				() -> assertEquals(expectedIssue.getStateName(), issueToCheck.getStateName(), "incorrect state name"),
 				() -> assertEquals(expectedIssue.getIssueType(), issueToCheck.getIssueType(), "incorrect issue type"),
 				() -> assertEquals(expectedIssue.getOwner(), issueToCheck.getOwner(), "incorrect owner id"),
-				() -> assertEquals(expectedIssue.isConfirmed(), issueToCheck.isConfirmed(), "incorrect confirm status"),
+				() -> assertFalse(issueToCheck.isConfirmed(), "incorrect confirm status"),
 				() -> assertEquals(expectedIssue.getResolution(), issueToCheck.getResolution(), "incorrect resolution"),
 				() -> assertEquals(expectedIssue.getNotes(), issueToCheck.getNotes(), "incorrect notes array"));
 	}

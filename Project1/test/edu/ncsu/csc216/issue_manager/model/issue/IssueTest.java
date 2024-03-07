@@ -96,7 +96,7 @@ public class IssueTest {
 				() -> assertEquals(Issue.NEW_NAME, i1.getStateName(), "incorrect state name"),
 				() -> assertEquals(Issue.I_BUG, i1.getIssueType(), "incorrect issue type"),
 				() -> assertEquals(OWNER, i1.getOwner(), "incorrect owner id"),
-				() -> assertEquals(true, i1.isConfirmed(), "incorrect confirm status"),
+				() -> assertTrue(i1.isConfirmed(), "incorrect confirm status"),
 				() -> assertEquals(Command.R_FIXED, i1.getResolution(), "incorrect resolution"),
 				() -> assertEquals(notes, i1.getNotes(), "incorrect notes array"));
 		
@@ -111,7 +111,7 @@ public class IssueTest {
 				() -> assertEquals(Issue.WORKING_NAME, i2.getStateName(), "incorrect state name"),
 				() -> assertEquals(Issue.I_BUG, i2.getIssueType(), "incorrect issue type"),
 				() -> assertEquals("", i2.getOwner(), "incorrect owner id"),
-				() -> assertEquals(true, i2.isConfirmed(), "incorrect confirm status"),
+				() -> assertTrue(i2.isConfirmed(), "incorrect confirm status"),
 				() -> assertEquals(Command.R_WONTFIX, i2.getResolution(), "Incorrect resolution"),
 				() -> assertEquals(notes, i2.getNotes(), "incorrect notes array"));
 		
@@ -126,7 +126,7 @@ public class IssueTest {
 				() -> assertEquals(Issue.CLOSED_NAME, i3.getStateName(), "incorrect state name"),
 				() -> assertEquals(Issue.I_BUG, i3.getIssueType(), "incorrect issue type"),
 				() -> assertEquals("null", i3.getOwner(), "incorrect owner id"),
-				() -> assertEquals(true, i3.isConfirmed(), "incorrect confirm status"),
+				() -> assertTrue(i3.isConfirmed(), "incorrect confirm status"),
 				() -> assertEquals(Command.R_DUPLICATE, i3.getResolution(), "Incorrect resolution"),
 				() -> assertEquals(notes, i3.getNotes(), "incorrect notes array"));
 		
@@ -141,7 +141,7 @@ public class IssueTest {
 				() -> assertEquals(Issue.VERIFYING_NAME, i4.getStateName(), "incorrect state name"),
 				() -> assertEquals(Issue.I_ENHANCEMENT, i4.getIssueType(), "incorrect issue type"),
 				() -> assertEquals(OWNER, i4.getOwner(), "incorrect owner id"),
-				() -> assertEquals(true, i4.isConfirmed(), "incorrect confirm status"),
+				() -> assertTrue(i4.isConfirmed(), "incorrect confirm status"),
 				() -> assertEquals("", i4.getResolution(), "Incorrect resolution"),
 				() -> assertEquals(notes, i4.getNotes(), "incorrect notes array"));
 		
@@ -359,7 +359,7 @@ public class IssueTest {
 		Command c4 = new Command(Command.CommandValue.CONFIRM, OWNER, Command.Resolution.WONTFIX, NOTE);
 		i4.update(c4);
 		assertEquals(Issue.CONFIRMED_NAME, i4.getStateName(), "Incorrec state name");
-		assertEquals(true, i4.isConfirmed(), "Incorrect confirmed status");
+		assertTrue(i4.isConfirmed(), "Incorrect confirmed status");
 		assertEquals("-[New] Note 1\r\n"
 				+ "-[Confirmed] Note 2\r\n"
 				+ "-[Confirmed] notes", i2.getNotesString(), "Incorrect notes");
@@ -492,7 +492,7 @@ public class IssueTest {
 			Command assignVal = new Command (Command.CommandValue.ASSIGN, OWNER, Command.Resolution.WONTFIX, NOTE);
 			i1.update(assignVal);
 			assertEquals(OWNER, i1.getOwner(), "Incorrect owner");
-			assertEquals(true, i1.isConfirmed(), "Incorrect confirmed status");
+			assertTrue(i1.isConfirmed(), "Incorrect confirmed status");
 			assertEquals(Issue.WORKING_NAME, i1.getStateName(), "Incorrect state");
 			assertEquals("-[New] Note 1\r\n"
 					+ "-[Confirmed] Note 2\r\n"
@@ -505,7 +505,7 @@ public class IssueTest {
 			Command resolveVal = new Command (Command.CommandValue.RESOLVE, OWNER, Command.Resolution.WONTFIX, NOTE);
 			i2.update(resolveVal);
 			assertEquals(Issue.CLOSED_NAME, i2.getStateName(), "Incorret state");
-			assertEquals(true, i2.isConfirmed(), "Incorrect confirmed status");
+			assertTrue(i2.isConfirmed(), "Incorrect confirmed status");
 			assertEquals("-[New] Note 1\r\n"
 					+ "-[Confirmed] Note 2\r\n"
 					+ "-[Closed] notes", i2.getNotesString(), "Incorrect notes");
