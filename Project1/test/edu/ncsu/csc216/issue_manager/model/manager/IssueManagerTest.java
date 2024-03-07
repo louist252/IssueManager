@@ -235,7 +235,7 @@ class IssueManagerTest {
 		//Check issue with id 2 after a command is exectuted.
 		assertAll ("Issue",
 				() -> assertEquals("null", manager.getIssueById(2).getOwner(), "Incorrect owner"),
-				() -> assertEquals(true, manager.getIssueById(2).isConfirmed(), "Incorrect confirmed status"),
+				() -> assertTrue(manager.getIssueById(2).isConfirmed(), "Incorrect confirmed status"),
 				() -> assertEquals(Issue.CONFIRMED_NAME, manager.getIssueById(2).getStateName(), "Incorrect state name"),
 				() -> assertEquals("", manager.getIssueById(2).getResolution(), "Incorrect resolution "),
 				() -> assertEquals(2, manager.getIssueById(2).getIssueId(), "Incorrect issue id"),
