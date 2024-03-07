@@ -125,7 +125,7 @@ public class IssueTest {
 				() -> assertEquals(ID, i3.getIssueId(), "incorrect issue id"),
 				() -> assertEquals(Issue.CLOSED_NAME, i3.getStateName(), "incorrect state name"),
 				() -> assertEquals(Issue.I_BUG, i3.getIssueType(), "incorrect issue type"),
-				() -> assertEquals("", i3.getOwner(), "incorrect owner id"),
+				() -> assertEquals("null", i3.getOwner(), "incorrect owner id"),
 				() -> assertEquals(true, i3.isConfirmed(), "incorrect confirm status"),
 				() -> assertEquals(Command.R_DUPLICATE, i3.getResolution(), "Incorrect resolution"),
 				() -> assertEquals(notes, i3.getNotes(), "incorrect notes array"));

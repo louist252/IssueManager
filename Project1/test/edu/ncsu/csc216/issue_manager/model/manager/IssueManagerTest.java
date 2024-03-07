@@ -5,7 +5,9 @@ package edu.ncsu.csc216.issue_manager.model.manager;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,18 +55,9 @@ class IssueManagerTest {
 		//Check to see if manager is cleared
 		assertEquals(0, manager.getIssueListAsArray().length, "Incorrect length");
 		
-		manager.addIssueToList(IssueType.BUG, "summary1", "note2");
-		manager.addIssueToList(IssueType.BUG, "Summary2", "Note1");
-		manager.addIssueToList(IssueType.ENHANCEMENT, "summary3", "Note3");
-		manager.addIssueToList(IssueType.BUG, "summary4", "note4");
-		manager.addIssueToList(IssueType.ENHANCEMENT, "summary5", "note5");
-        
-		try {
-			manager.saveIssuesToFile("test-files/actual_issue.txt");
-		} catch (IOException e) {
-			fail("Cannot write to course records file");
-		}
-
+		manager.addIssueToList(IssueType.ENHANCEMENT, SUMMARY, NOTE);
+		manager.saveIssuesToFile("test-files/actual_issue.txt");    
+		checkFiles("test-files/exp_enhancement_new.txt", "test-files/actual_issue.txt");
 	}
 
 	/**
@@ -237,7 +230,7 @@ class IssueManagerTest {
 		manager.executeCommand(2, c1);
 		//Check issue with id 2 after a command is exectuted.
 		assertAll ("Issue",
-				() -> assertEquals("", manager.getIssueById(2).getOwner(), "Incorrect owner"),
+				() -> assertEquals("null", manager.getIssueById(2).getOwner(), "Incorrect owner"),
 				() -> assertEquals(true, manager.getIssueById(2).isConfirmed(), "Incorrect confirmed status"),
 				() -> assertEquals(Issue.CONFIRMED_NAME, manager.getIssueById(2).getStateName(), "Incorrect state name"),
 				() -> assertEquals("", manager.getIssueById(2).getResolution(), "Incorrect resolution "),
@@ -275,6 +268,29 @@ class IssueManagerTest {
 		
 		assertEquals(0, manager.getIssueListAsArray().length, "Incorrect length");
 		
+	}
+	
+	/**
+	 * Helper method to compare two files for the same contents
+	 * @param expFile expected output
+	 * @param actFile actual output
+	 */
+	private void checkFiles(String expFile, String actFile) {
+		try (Scanner expScanner = new Scanner(new File(expFile));
+			 Scanner actScanner = new Scanner(new File(actFile));) {
+			
+			while (actScanner.hasNextLine()) {
+				assertEquals(expScanner.nextLine(), actScanner.nextLine());
+			}
+			if (expScanner.hasNextLine()) {
+				fail();
+			}
+			
+			expScanner.close();
+			actScanner.close();
+		} catch (IOException e) {
+			fail("Error reading files.");
+		}
 	}
 
 	

@@ -104,7 +104,7 @@ public class Issue {
 		setNotes(notes);
 		setResolution("");
 		setConfirmed(false);
-		setOwner("");
+		setOwner(null);
 		
 		
 		
@@ -220,7 +220,9 @@ public class Issue {
 	 * @param owner the owner to set
 	 */
 	private void setOwner(String owner) {
-		if (owner == null || owner.length() == 0) {
+		if (owner == null) {
+			this.owner = "null";
+		} else if (owner.length() == 0) {
 			this.owner = "";
 		} else {
 			this.owner = owner;
@@ -486,9 +488,9 @@ public class Issue {
 				switch(issueType) {
 				case BUG:
 					if(isConfirmed()) {
-						if(getOwner().length() != 0) {
+						if(!getOwner().equals("null") && !getOwner().equals("")) {
 							setState(WORKING_NAME);
-						} else {
+						} else if (getOwner().equals("null") || getOwner().equals("")) {
 							setOwner(command.getOwnerId());
 							setState(CONFIRMED_NAME);
 						}

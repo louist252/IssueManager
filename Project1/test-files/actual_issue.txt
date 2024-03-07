@@ -1,10 +1,2 @@
-*1,New,Bug,summary1,,false,
--[New] note2
-*2,New,Bug,Summary2,,false,
--[New] Note1
-*3,New,Enhancement,summary3,,false,
--[New] Note3
-*4,New,Bug,summary4,,false,
--[New] note4
-*5,New,Enhancement,summary5,,false,
--[New] note5
+*1,New,Enhancement,Issue description,null,false,
+-[New] note
