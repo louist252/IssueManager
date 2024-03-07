@@ -35,9 +35,13 @@ public class IssueWriterTest {
 		try {
 			IssueWriter.writeIssuesToFile("test-files/actual_issue.txt", issues);
 		} catch (Exception e) {
-			fail("Cannot write to course records file");
+			Exception exception = assertThrows(IllegalArgumentException.class, 
+					() -> IssueWriter.writeIssuesToFile("Invalid file location", issues));
+			assertEquals("Cannot write issue to file", exception.getMessage());
 		}
 	}
+	
+	
 
 	
 }

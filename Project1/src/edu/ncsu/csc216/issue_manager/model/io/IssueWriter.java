@@ -29,7 +29,7 @@ public class IssueWriter {
 			}
 			fileWriter.close();
 		} catch (FileNotFoundException e) {
-			throw new IllegalArgumentException("File Not Found");
+			throw new IllegalArgumentException("Cannot write issue to file");
 		}
 		
 	}

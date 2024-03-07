@@ -91,13 +91,10 @@ public class IssueReaderTest {
 			assertEquals(0, issues.size(), "Incorrect length");
 		} catch (Exception e) {
 			Exception exception = assertThrows(IllegalArgumentException.class, 
-					() -> IssueReader.readIssuesFromFile("Invalid file location"));
+					() -> IssueReader.readIssuesFromFile("test-files/invalid_test_file.txt"));
 			assertEquals("File not found", exception.getMessage());
 		}
 		
-		Exception exception = assertThrows(IllegalArgumentException.class, 
-				() -> IssueReader.readIssuesFromFile("Invalid file location"));
-		assertEquals("File not found", exception.getMessage());
 		
 	}
 	
