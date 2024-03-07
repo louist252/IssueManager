@@ -12,12 +12,7 @@ import edu.ncsu.csc216.issue_manager.model.issue.Issue;
  * @author Louis Ton
  */
 public class IssueWriter {
-	/**
-	 * The constructor for IssueWriter
-	 */
-	public IssueWriter() {
-		
-	}
+	
 	
 	/**
 	 * Write the the list of issues into a file

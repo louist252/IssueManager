@@ -39,11 +39,5 @@ public class IssueWriterTest {
 		}
 	}
 
-	/**
-	 * Test constructor for coverage
-	 */
-	@Test
-	public void testIssueWriter() {
-		assertDoesNotThrow(() -> new IssueWriter());
-	}
+	
 }
