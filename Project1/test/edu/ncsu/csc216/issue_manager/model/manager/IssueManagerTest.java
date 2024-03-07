@@ -64,8 +64,8 @@ class IssueManagerTest {
 	 */
 	@Test
 	public void testLoadIssuesFromFile() {
+		manager.createNewIssueList();
 		try {
-			manager.createNewIssueList();
 	        manager.loadIssuesFromFile("test-files/issue10.txt");
 	        Object[][] arr = manager.getIssueListAsArray();
 	        //One issue in test file, check length
@@ -82,6 +82,8 @@ class IssueManagerTest {
 		}
         
 	}
+	
+	
 
 	/**
 	 * Test method for createNewIssueList method
