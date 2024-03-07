@@ -74,7 +74,9 @@ public class IssueReaderTest {
 			}
 		
 		} catch (Exception e) {
-			fail("Unexpected FileNotFoundException");
+			Exception exception = assertThrows(IllegalArgumentException.class, 
+					() -> IssueReader.readIssuesFromFile("Invalid file location"));
+			assertEquals("File not found", exception.getMessage());
 		}
 		
 	}
@@ -88,7 +90,9 @@ public class IssueReaderTest {
 			ArrayList<Issue> issues = IssueReader.readIssuesFromFile("test-files/invalid_test_file.txt");
 			assertEquals(0, issues.size(), "Incorrect length");
 		} catch (Exception e) {
-			fail("Unexpected FileNotFoundException");
+			Exception exception = assertThrows(IllegalArgumentException.class, 
+					() -> IssueReader.readIssuesFromFile("Invalid file location"));
+			assertEquals("File not found", exception.getMessage());
 		}
 		
 		Exception exception = assertThrows(IllegalArgumentException.class, 
