@@ -26,12 +26,15 @@ public class IssueReader {
 			throw new IllegalArgumentException("File not found");
 		} else {
 			try (Scanner scan = new Scanner(file)) {
-				scan.useDelimiter("\\r?\\n?[*]");
-				while(scan.hasNext()) {
-					String issueString = scan.next();
-					Issue issue = processIssue(issueString);
-					issueList.add(issue);
-					
+				try {
+					scan.useDelimiter("\\r?\\n?[*]");
+					while(scan.hasNext()) {
+						String issueString = scan.next();
+						Issue issue = processIssue(issueString);
+						issueList.add(issue);	
+					}
+				} catch (Exception e) {
+					throw new IllegalArgumentException("File not found");
 				}
 				scan.close();
 			} catch (FileNotFoundException e){
