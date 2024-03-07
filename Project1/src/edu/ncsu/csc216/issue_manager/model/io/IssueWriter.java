@@ -2,7 +2,6 @@ package edu.ncsu.csc216.issue_manager.model.io;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -24,9 +23,7 @@ public class IssueWriter {
 	 * Write the the list of issues into a file
 	 * @param filename the file to write into
 	 * @param issues the list of issues
-	 * @throws FileNotFoundException 
-	 * @throws IOException if unable to write to file
-	 * @throws IllegalArgumentException if there is any errro
+	 * @throws IllegalArgumentException if there is any error
 	 */
 	public static void writeIssuesToFile(String filename, List<Issue> issues) {
 		File file = new File(filename);

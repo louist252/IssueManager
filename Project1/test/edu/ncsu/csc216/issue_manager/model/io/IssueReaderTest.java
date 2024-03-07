@@ -92,7 +92,7 @@ public class IssueReaderTest {
 		}
 		
 		Exception exception = assertThrows(IllegalArgumentException.class, 
-				() -> IssueReader.readIssuesFromFile("Invalid file"));
+				() -> IssueReader.readIssuesFromFile("Invalid file location"));
 		assertEquals("File not found", exception.getMessage());
 		
 	}
