@@ -359,7 +359,7 @@ public class IssueTest {
 		Command c4 = new Command(Command.CommandValue.CONFIRM, OWNER, Command.Resolution.WONTFIX, NOTE);
 		i4.update(c4);
 		assertEquals(Issue.CONFIRMED_NAME, i4.getStateName(), "Incorrec state name");
-		assertTrue(i4.isConfirmed(), "Incorrect confirmed status");
+		assertEquals(true, i4.isConfirmed(), "Incorrect confirmed status");
 		assertEquals("-[New] Note 1\r\n"
 				+ "-[Confirmed] Note 2\r\n"
 				+ "-[Confirmed] notes", i2.getNotesString(), "Incorrect notes");
@@ -492,7 +492,7 @@ public class IssueTest {
 			Command assignVal = new Command (Command.CommandValue.ASSIGN, OWNER, Command.Resolution.WONTFIX, NOTE);
 			i1.update(assignVal);
 			assertEquals(OWNER, i1.getOwner(), "Incorrect owner");
-			assertTrue(i1.isConfirmed(), "Incorrect confirmed status");
+			assertEquals(true, i1.isConfirmed(), "Incorrect confirmed status");
 			assertEquals(Issue.WORKING_NAME, i1.getStateName(), "Incorrect state");
 			assertEquals("-[New] Note 1\r\n"
 					+ "-[Confirmed] Note 2\r\n"
@@ -505,7 +505,7 @@ public class IssueTest {
 			Command resolveVal = new Command (Command.CommandValue.RESOLVE, OWNER, Command.Resolution.WONTFIX, NOTE);
 			i2.update(resolveVal);
 			assertEquals(Issue.CLOSED_NAME, i2.getStateName(), "Incorret state");
-			assertTrue(i2.isConfirmed(), "Incorrect confirmed status");
+			assertEquals(true, i2.isConfirmed(), "Incorrect confirmed status");
 			assertEquals("-[New] Note 1\r\n"
 					+ "-[Confirmed] Note 2\r\n"
 					+ "-[Closed] notes", i2.getNotesString(), "Incorrect notes");
