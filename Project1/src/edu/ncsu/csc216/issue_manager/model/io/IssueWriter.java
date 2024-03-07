@@ -26,7 +26,7 @@ public class IssueWriter {
 	 * @throws IOException if unable to write to file
 	 * @throws IllegalArgumentException if there is any errro
 	 */
-	public static void writeIssuesToFile(String filename, List<Issue> issues) throws IOException {
+	public static void writeIssuesToFile(String filename, List<Issue> issues) {
 		PrintStream fileWriter = new PrintStream(new File(filename));
 		for (int i = 0; i < issues.size(); i++) {
 			fileWriter.println(issues.get(i).toString());
