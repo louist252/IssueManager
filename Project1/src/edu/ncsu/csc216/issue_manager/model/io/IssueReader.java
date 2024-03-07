@@ -22,7 +22,9 @@ public class IssueReader {
 	public static ArrayList<Issue> readIssuesFromFile(String filename) {
 		ArrayList<Issue> issueList = new ArrayList<Issue>();
 		File file = new File (filename);
-		if (file.exists()) {
+		if (!file.exists()) {
+			throw new IllegalArgumentException("File not found");
+		} else {
 			try (Scanner scan = new Scanner(file)) {
 				scan.useDelimiter("\\r?\\n?[*]");
 				while(scan.hasNext()) {
@@ -33,11 +35,10 @@ public class IssueReader {
 				}
 				scan.close();
 			} catch (FileNotFoundException e){
-				 //
+				throw new IllegalArgumentException("File not found");
 			}
-		} else {
-			throw new IllegalArgumentException("File not found");
 		}
+		
 		return issueList;
 	}
 	
