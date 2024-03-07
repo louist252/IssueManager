@@ -65,7 +65,7 @@ class IssueManagerTest {
 	@Test
 	public void testLoadIssuesFromFile() {
 		manager.createNewIssueList();
-		try {
+		
 	        manager.loadIssuesFromFile("test-files/issue10.txt");
 	        Object[][] arr = manager.getIssueListAsArray();
 	        //One issue in test file, check length
@@ -75,11 +75,8 @@ class IssueManagerTest {
 			assertEquals(Issue.WORKING_NAME, arr[0][1]); 
 			assertEquals(Issue.I_BUG, arr[0][2]); 
 			assertEquals(SUMMARY, arr[0][3]);
-		} catch (Exception e) {
-			Exception exception = assertThrows(IllegalArgumentException.class, 
-					() -> manager.loadIssuesFromFile("Invalid file location"));
-			assertEquals("Invalid file", exception.getMessage());
-		}
+		
+		
         
 	}
 	
