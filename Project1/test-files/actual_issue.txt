@@ -1,4 +1,2 @@
-*4,Closed,Bug,Issue description,,false,WontFix
--[New] Note 1
--[Confirmed] Note 2
--[Working] Note 3
+*1,New,Enhancement,Issue description,null,false,
+-[New] note
