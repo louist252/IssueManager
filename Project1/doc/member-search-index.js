@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"edu.ncsu.csc216.issue_manager.model.io","c":"IssueReader","l":"IssueReader()","u":"%3Cinit%3E()"},{"p":"edu.ncsu.csc216.issue_manager.model.io","c":"IssueReader","l":"readIssuesFromFile(String)","u":"readIssuesFromFile(java.lang.String)"}];updateSearchResults();

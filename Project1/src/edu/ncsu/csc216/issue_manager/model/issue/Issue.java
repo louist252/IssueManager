@@ -12,27 +12,32 @@ import edu.ncsu.csc216.issue_manager.model.command.Command.Resolution;
 public class Issue {
 	
 	/** IssueType that can be used */
-	public enum IssueType { ENHANCEMENT, BUG }
+	public enum IssueType { 
+		/** Enhancement IssueType */
+		ENHANCEMENT, 
+		/** Bug IssueType */
+		BUG 
+		}
 	
-	/**  A constant string for the “Enhancement” issue type */
+	/**  A constant string for the Enhancement issue type */
 	public static final String I_ENHANCEMENT = "Enhancement";
 	
-	/** A constant string for the “Bug” issue type */
+	/** A constant string for the Bug issue type */
 	public static final String I_BUG = "Bug";
 	
-	/** A constant string for the new state’s name with the value “New” */
+	/** A constant string for the new state’s name with the value New */
 	public static final String NEW_NAME = "New";
 	
-	/** A constant string for the working state’s name with the value “Working” */
+	/** A constant string for the working state’s name with the value Working */
 	public static final String WORKING_NAME = "Working";
 	
-	/** A constant string for the confirmed state’s name with the value “Confirmed” */
+	/** A constant string for the confirmed state’s name with the value Confirmed */
 	public static final String CONFIRMED_NAME = "Confirmed";
-	
-	/** A constant string for the verifying state’s name with the value “Verifying” */
+
+	/** A constant string for the verifying state’s name with the value Verifying */
 	public static final String VERIFYING_NAME = "Verifying";
 	
-	/** A constant string for the closeed state’s name with the value “Closed” */
+	/** A constant string for the closeed state’s name with the value Closed */
 	public static final String CLOSED_NAME = "Closed";
 	
 	/** Unique issue id for an issue */

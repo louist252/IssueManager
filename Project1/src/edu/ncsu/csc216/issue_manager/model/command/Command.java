@@ -6,21 +6,41 @@ package edu.ncsu.csc216.issue_manager.model.command;
  */
 public class Command {
 	/** CommandValue that can be used */
-	public enum CommandValue { ASSIGN, CONFIRM, RESOLVE, VERIFY, REOPEN }
+	public enum CommandValue { 
+		/** Assign CommandValue */
+		ASSIGN, 
+		/** Confirm CommandValue */
+		CONFIRM, 
+		/** Resolve CommandValue */
+		RESOLVE,
+		/** Verify CommandValue */
+		VERIFY, 
+		/** Reopen CommandValue */
+		REOPEN 
+		}
 
 	/** Resolution that can be used */
-	public enum Resolution { FIXED, DUPLICATE, WONTFIX, WORKSFORME }
+	public enum Resolution { 
+		/** Fixed Resolution */
+		FIXED, 
+		/** Duplicate Resolution */
+		DUPLICATE, 
+		/** WontFix Resolution */
+		WONTFIX, 
+		/** WorksForMe Resolution */
+		WORKSFORME 
+		}
 
-	/** A constant string for the “Fixed” resolution */
+	/** A constant string for the Fixed resolution */
 	public static final String R_FIXED = "Fixed";
 	
-	/** A constant string for the “Duplicate” resolution */
+	/** A constant string for the Duplicate resolution */
 	public static final String R_DUPLICATE = "Duplicate";
 	
-	/** A constant string for the “WontFix” resolution */
+	/** A constant string for the WontFix resolution */
 	public static final String R_WONTFIX = "WontFix";
 	
-	/** A constant string for the “WorksForMe” resolution */
+	/** A constant string for the WorksForMe resolution */
 	public static final String R_WORKSFORME = "WorksForMe";	
 	
 	/** The id of owner*/

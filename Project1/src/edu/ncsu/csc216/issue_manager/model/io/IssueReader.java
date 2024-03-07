@@ -17,6 +17,7 @@ public class IssueReader {
 	 * Read issue from a file
 	 * @param filename the file to read
 	 * @return an array of Issues
+	 * @throws FileNotFoundException if the file is not found
 	 */
 	public static ArrayList<Issue> readIssuesFromFile(String filename) throws FileNotFoundException {
 		ArrayList<Issue> issueList = new ArrayList<Issue>();
@@ -29,8 +30,8 @@ public class IssueReader {
 				
 			}
 			scan.close();
-		} catch (IllegalArgumentException e){
-			 throw new IllegalArgumentException();
+		} catch (Exception e){
+			 throw new IllegalArgumentException("File not found");
 		}
 		
 		return issueList;
