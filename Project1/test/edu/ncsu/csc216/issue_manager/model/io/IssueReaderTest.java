@@ -71,7 +71,7 @@ public class IssueReaderTest {
 	public void testReadIssuesFromFile() {
 		try {
 			ArrayList<Issue> issues = IssueReader.readIssuesFromFile(validTestFile);
-		
+			assertEquals(validIssues.length, issues.size(), "Incorrect length");
 			for (int i = 0; i < validIssues.length; i++) {
 				assertEquals(validIssues[i], issues.get(i).toString());
 			}

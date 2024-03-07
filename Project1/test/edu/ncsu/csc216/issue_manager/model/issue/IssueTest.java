@@ -355,10 +355,11 @@ public class IssueTest {
 		//Remove the last note in array for testing with next command
 		notes.remove(notes.size() - 1);
 		//Test when CommandValue is Confirmed when IssueType is Bug
-		Issue i4 = new Issue(ID, Issue.NEW_NAME, Issue.I_BUG, SUMMARY, "", true, Command.R_DUPLICATE, notes);
+		Issue i4 = new Issue(ID, Issue.NEW_NAME, Issue.I_BUG, SUMMARY, "", false, Command.R_DUPLICATE, notes);
 		Command c4 = new Command(Command.CommandValue.CONFIRM, OWNER, Command.Resolution.WONTFIX, NOTE);
 		i4.update(c4);
 		assertEquals(Issue.CONFIRMED_NAME, i4.getStateName(), "Incorrec state name");
+		assertTrue(i4.isConfirmed(), "Incorrect confirmed status");
 		assertEquals("-[New] Note 1\r\n"
 				+ "-[Confirmed] Note 2\r\n"
 				+ "-[Confirmed] notes", i2.getNotesString(), "Incorrect notes");

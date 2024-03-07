@@ -44,7 +44,7 @@ public class IssueManager {
 	 * Save issues to a file
 	 * @param filename name of the file
 	 */
-	public void saveIssuesToFile(String filename) {
+	public void saveIssuesToFile(String filename) throws IOException {
 		try {
 			IssueWriter.writeIssuesToFile(filename, issueList.getIssues());
 		} catch (IOException e) {
@@ -96,26 +96,22 @@ public class IssueManager {
 	 */
 	public Object[][] getIssueListAsArrayByIssueType(String issueType) {
 		if (issueType == null) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Invalid information.");
 		}
 		
 		ArrayList<Issue> issuesByType = issueList.getIssuesByType(issueType);
-		Object[][] issueArrayByType = new Object[issuesByType.size()][4];
-		
-		
+		Object[][] issueArrayByType = new Object [issuesByType.size()][4];
+	
+		int row = 0;
 		for(int i = 0; i < issuesByType.size(); i++) {
-			if (!issuesByType.get(i).getIssueType().equals(Issue.I_BUG) &&
-				!issuesByType.get(i).getIssueType().equals(Issue.I_ENHANCEMENT)) {
-				Object[][] emptyArray = new Object[0][0];
-				return emptyArray;
-			}
-			issueArrayByType[i][0] = issueList.getIssues().get(i).getIssueId();
-			issueArrayByType[i][1] = issueList.getIssues().get(i).getStateName();
-			issueArrayByType[i][2] = issueList.getIssues().get(i).getIssueType();
-			issueArrayByType[i][3] = issueList.getIssues().get(i).getSummary();
-		
+			Issue issue = issuesByType.get(i);
+			issueArrayByType[row][0] = issue.getIssueId();
+			issueArrayByType[row][1] = issue.getStateName();
+			issueArrayByType[row][2] = issue.getIssueType();
+			issueArrayByType[row][3] = issue.getSummary();
+			row++;
+			
 		}
-		
 		return issueArrayByType;
 	}
 	

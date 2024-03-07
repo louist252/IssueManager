@@ -577,7 +577,6 @@ public class Issue {
 			switch(command.getCommand()) {
 			case ASSIGN:
 				setOwner(command.getOwnerId());
-				setConfirmed(true);
 				setState(WORKING_NAME);
 				break;
 			case RESOLVE:
@@ -629,6 +628,7 @@ public class Issue {
 			case BUG:
 				if (command.getCommand() == Command.CommandValue.CONFIRM) {
 					setState(CONFIRMED_NAME);
+					setConfirmed(true);
 				} else if (command.getCommand() == Command.CommandValue.RESOLVE){
 					resolution = command.getResolution();
 					setState(CLOSED_NAME);

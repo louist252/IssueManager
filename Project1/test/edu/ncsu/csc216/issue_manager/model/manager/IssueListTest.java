@@ -117,6 +117,9 @@ class IssueListTest {
 		assertEquals(issueListExpected.getIssues().size(), issueToTest.size(), "Incorrect issue list");
 		assertEquals(issueListExpected.getIssues().get(0), issueToTest.get(0), "Incorrect issue list");
 		assertEquals(issueListExpected.getIssues().get(1), issueToTest.get(1), "Incorrect issue list");
+		//Test each issue for their type
+		assertEquals(Issue.I_BUG, issueToTest.get(0).getIssueType(), "Incorrect issue type");
+		assertEquals(Issue.I_BUG, issueToTest.get(1).getIssueType(), "Incorrect issue type");
 		
 	}
 

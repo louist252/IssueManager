@@ -5,11 +5,14 @@ package edu.ncsu.csc216.issue_manager.model.manager;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+import java.io.IOException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import edu.ncsu.csc216.issue_manager.model.command.Command;
+import edu.ncsu.csc216.issue_manager.model.command.Command.CommandValue;
+import edu.ncsu.csc216.issue_manager.model.io.IssueWriter;
 import edu.ncsu.csc216.issue_manager.model.issue.Issue;
 import edu.ncsu.csc216.issue_manager.model.issue.Issue.IssueType;
 
@@ -45,7 +48,22 @@ class IssueManagerTest {
 	 */
 	@Test
 	public void testSaveIssuesToFile() {
-        assertDoesNotThrow(() -> manager.saveIssuesToFile("test-files/issues.txt"));
+		manager.createNewIssueList();
+		
+		//Check to see if manager is cleared
+		assertEquals(0, manager.getIssueListAsArray().length, "Incorrect length");
+		
+		manager.addIssueToList(IssueType.BUG, "summary1", "note2");
+		manager.addIssueToList(IssueType.BUG, "Summary2", "Note1");
+		manager.addIssueToList(IssueType.ENHANCEMENT, "summary3", "Note3");
+		manager.addIssueToList(IssueType.BUG, "summary4", "note4");
+		manager.addIssueToList(IssueType.ENHANCEMENT, "summary5", "note5");
+        
+		try {
+			manager.saveIssuesToFile("test-files/actual_issue.txt");
+		} catch (IOException e) {
+			fail("Cannot write to course records file");
+		}
 
 	}
 
@@ -54,7 +72,18 @@ class IssueManagerTest {
 	 */
 	@Test
 	public void testLoadIssuesFromFile() {
-        assertDoesNotThrow(() -> manager.loadIssuesFromFile("test-files/issue1.txt"));
+		manager.createNewIssueList();
+        manager.loadIssuesFromFile("test-files/issue10.txt");
+        Object[][] arr = manager.getIssueListAsArray();
+        //One issue in test file, check length
+        assertEquals(1, arr.length, "Incorrect length");
+        //Check each element in the arr
+        assertEquals(3, arr[0][0], "Incorrect issue Id");
+		assertEquals(Issue.WORKING_NAME, arr[0][1]); 
+		assertEquals(Issue.I_BUG, arr[0][2]); 
+		assertEquals(SUMMARY, arr[0][3]);
+        
+        
 	}
 
 	/**
@@ -62,8 +91,22 @@ class IssueManagerTest {
 	 */
 	@Test
 	public void testCreateNewIssueList() {
-		 manager.createNewIssueList();
-		 assertEquals(0, manager.getIssueListAsArray().length, "Incorrect length for empty array");
+		manager.createNewIssueList();
+		
+		 
+		manager.addIssueToList(IssueType.BUG, "summary2", "note2");
+		manager.addIssueToList(IssueType.BUG, "Summary1", "Note1");
+		manager.addIssueToList(IssueType.ENHANCEMENT, "summary3", "Note3");
+		manager.addIssueToList(IssueType.BUG, "summary4", "note4");
+		manager.addIssueToList(IssueType.ENHANCEMENT, "summary5", "note5");
+		 
+		//Check before clearing
+		assertEquals(5, manager.getIssueListAsArray().length, "Incorrect length for empty array");
+		
+		manager.createNewIssueList();
+		
+		//Check to see if manager is cleared
+		assertEquals(0, manager.getIssueListAsArray().length, "Incorrect length for empty array");
 	}
 
 	/**
@@ -72,6 +115,10 @@ class IssueManagerTest {
 	@Test
 	public void testGetIssueListAsArray() {
 		manager.createNewIssueList();
+		
+		//Check to see if manager is cleared
+		assertEquals(0, manager.getIssueListAsArray().length, "Incorrect length");
+		
 		Object[][] issueArray = manager.getIssueListAsArray();
 		
 		//Check size of array
@@ -102,20 +149,41 @@ class IssueManagerTest {
 	@Test
 	public void testGetIssueListAsArrayByIssueType() {
 		manager.createNewIssueList();
-		manager.addIssueToList(IssueType.BUG, "summary2", "note2");
-		manager.addIssueToList(IssueType.BUG, "Summary1", "Note1");
-		manager.addIssueToList(IssueType.ENHANCEMENT, "Summary2", "Note2");
+		
+		//Check to see if manager is cleared
+		assertEquals(0, manager.getIssueListAsArray().length, "Incorrect length");
+		
+		manager.addIssueToList(IssueType.BUG, "summary1", "note2");
+		manager.addIssueToList(IssueType.BUG, "Summary2", "Note1");
+		manager.addIssueToList(IssueType.ENHANCEMENT, "summary3", "Note3");
+		manager.addIssueToList(IssueType.BUG, "summary4", "note4");
+		manager.addIssueToList(IssueType.ENHANCEMENT, "summary5", "note5");
+		
+		//Test if there are correct number of issues
+		assertEquals(5, manager.getIssueListAsArray().length, "Incorrect length");
 
 	    //Test for type not bug or enhancement
 	    Object[][] emptyArray = manager.getIssueListAsArrayByIssueType("InvalidType");
 	    assertEquals(0, emptyArray.length);
 	    
-	    
-	    Object[][] arr2 = manager.getIssueListAsArrayByIssueType(Issue.I_ENHANCEMENT);
-	    assertEquals(1, arr2.length, "Incorrect size");
-	    
-	    Object[][] arr1 = manager.getIssueListAsArrayByIssueType(Issue.I_BUG);
+	    //Test for type enhancement
+	    Object[][] arr1 = manager.getIssueListAsArrayByIssueType(Issue.I_ENHANCEMENT);
 	    assertEquals(2, arr1.length, "Incorrect size");
+	    assertEquals(Issue.I_ENHANCEMENT, arr1[0][2], "Incorrect type");
+	    assertEquals(Issue.I_ENHANCEMENT, arr1[1][2], "Incorrect type");
+	    
+	   	    
+	    
+	    //Test for type bug
+	    Object[][] arr2 = manager.getIssueListAsArrayByIssueType(Issue.I_BUG);
+	    assertEquals(3, arr2.length, "Incorrect size");
+	    assertEquals(Issue.I_BUG, arr2[0][2], "Incorrect type");
+	    assertEquals(Issue.I_BUG, arr2[1][2], "Incorrect type");
+	    assertEquals(Issue.I_BUG, arr2[2][2], "Incorrect type");
+	    
+	    Exception e1 = assertThrows(IllegalArgumentException.class,
+				() -> manager.getIssueListAsArrayByIssueType(null));
+		assertEquals("Invalid information.", e1.getMessage(), "Incorrect exeption thrown wiht null not" + null);
 	    
 	    
 	}
@@ -125,8 +193,28 @@ class IssueManagerTest {
 	 */
 	@Test
 	public void testGetIssueById() {
+		manager.createNewIssueList();
+		//Check to see if manager is cleared
+		assertEquals(0, manager.getIssueListAsArray().length, "Incorrect length");
 		//Id 0 does not exist
 		assertNull(manager.getIssueById(0));
+		
+		manager.addIssueToList(IssueType.BUG, "summary1", "note1");
+		manager.addIssueToList(IssueType.BUG, "Summary2", "note2");
+		manager.addIssueToList(IssueType.ENHANCEMENT, "summary3", "note3");
+		
+		Issue issueToCheck = manager.getIssueById(3);
+		Issue expectedIssue = new Issue (3, IssueType.ENHANCEMENT, "summary3", "note3");
+		//Check each element of the issues
+		assertAll ("Issue",
+				() -> assertEquals(expectedIssue.getSummary(), issueToCheck.getSummary(), "incorrect summary"),
+				() -> assertEquals(expectedIssue.getIssueId(), issueToCheck.getIssueId(), "incorrect issue id"),
+				() -> assertEquals(expectedIssue.getStateName(), issueToCheck.getStateName(), "incorrect state name"),
+				() -> assertEquals(expectedIssue.getIssueType(), issueToCheck.getIssueType(), "incorrect issue type"),
+				() -> assertEquals(expectedIssue.getOwner(), issueToCheck.getOwner(), "incorrect owner id"),
+				() -> assertEquals(expectedIssue.isConfirmed(), issueToCheck.isConfirmed(), "incorrect confirm status"),
+				() -> assertEquals(expectedIssue.getResolution(), issueToCheck.getResolution(), "incorrect resolution"),
+				() -> assertEquals(expectedIssue.getNotes(), issueToCheck.getNotes(), "incorrect notes array"));
 	}
 
 	/**
@@ -135,14 +223,30 @@ class IssueManagerTest {
 	@Test
 	public void testExecuteCommand() {
 		manager.createNewIssueList();
+		//Check to see if manager is cleared
+		assertEquals(0, manager.getIssueListAsArray().length, "Incorrect length");
+		//Id 0 does not exist
+		assertNull(manager.getIssueById(0));
+		
+		manager.addIssueToList(IssueType.BUG, "summary1", "note1");
 		manager.addIssueToList(IssueType.BUG, "summary2", "note2");
-		manager.addIssueToList(IssueType.BUG, "Summary1", "Note1");
-		manager.addIssueToList(IssueType.ENHANCEMENT, "Summary2", "Note2");
+		manager.addIssueToList(IssueType.ENHANCEMENT, "summary3", "note3");
 		
-		//Check issue ID
+		Command c1 = new Command(CommandValue.CONFIRM, OWNER, null, NOTE);
 		
-		
-		
+		manager.executeCommand(2, c1);
+		//Check issue with id 2 after a command is exectuted.
+		assertAll ("Issue",
+				() -> assertEquals("", manager.getIssueById(2).getOwner(), "Incorrect owner"),
+				() -> assertEquals(true, manager.getIssueById(2).isConfirmed(), "Incorrect confirmed status"),
+				() -> assertEquals(Issue.CONFIRMED_NAME, manager.getIssueById(2).getStateName(), "Incorrect state name"),
+				() -> assertEquals("", manager.getIssueById(2).getResolution(), "Incorrect resolution "),
+				() -> assertEquals(2, manager.getIssueById(2).getIssueId(), "Incorrect issue id"),
+				() -> assertEquals(Issue.I_BUG, manager.getIssueById(2).getIssueType(), "Incorrect issue type"),
+				() -> assertEquals("summary2", manager.getIssueById(2).getSummary(), "Incorrect issue summary"),
+				() -> assertEquals("-[New] note2\r\n"
+								+ "-[Confirmed] note", manager.getIssueById(2).getNotesString(), "Incorrect notes"));
+
 	}
 
 	/**
@@ -150,7 +254,27 @@ class IssueManagerTest {
 	 */
 	@Test
 	public void testDeleteIssueById() {
-		 
+		manager.createNewIssueList();
+		//Check to see if manager is cleared
+		assertEquals(0, manager.getIssueListAsArray().length, "Incorrect length");
+		
+		
+		manager.addIssueToList(IssueType.BUG, "summary1", "note1");
+		manager.addIssueToList(IssueType.BUG, "Summary2", "note2");
+		manager.addIssueToList(IssueType.ENHANCEMENT, "summary3", "note3");
+		
+		manager.deleteIssueById(2);
+		
+		assertEquals(2, manager.getIssueListAsArray().length, "Incorrect length");
+		
+		manager.deleteIssueById(1);
+		
+		assertEquals(1, manager.getIssueListAsArray().length, "Incorrect length");
+		
+		manager.deleteIssueById(3);
+		
+		assertEquals(0, manager.getIssueListAsArray().length, "Incorrect length");
+		
 	}
 
 	
