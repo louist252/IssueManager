@@ -35,7 +35,7 @@ public class IssueWriterTest {
 		
 		try {
 			IssueWriter.writeIssuesToFile("test-files/actual_issue.txt", issues);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			fail("Cannot write to course records file");
 		}
 	}
