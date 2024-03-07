@@ -45,11 +45,7 @@ public class IssueManager {
 	 * @param filename name of the file
 	 */
 	public void saveIssuesToFile(String filename) throws IOException {
-		try {
-			IssueWriter.writeIssuesToFile(filename, issueList.getIssues());
-		} catch (IllegalArgumentException e) {
-			throw new IllegalArgumentException("Unable to save f");
-		}
+		IssueWriter.writeIssuesToFile(filename, issueList.getIssues());
 	}
 	
 	/**

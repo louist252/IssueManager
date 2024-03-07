@@ -50,37 +50,6 @@ public class IssueReader {
 	 * @return an issue
 	 */
 	private static Issue processIssue(String line) {
-		/*
-		String firstLine = line.substring(0, line.indexOf("\n") + 1);
-		
-		Scanner scanner = new Scanner(firstLine);
-		scanner.useDelimiter(",");
-		int id = scanner.nextInt();
-		String state = scanner.next();
-		String type = scanner.next();
-		String summary =  scanner.next();
-		String owner = scanner.next();
-		boolean confirmed = scanner.nextBoolean();
-		String resolution = scanner.next();
-		
-		
-		scanner.close();
-		
-		String notes = line.substring(line.indexOf("-") + 1);
-		Scanner forNotes = new Scanner(notes);
-		forNotes.useDelimiter("\r?\n?[-]");
-		
-		ArrayList<String> notesArray = new ArrayList<String>();
-		
-		while (forNotes.hasNext()) {
-            notesArray.add(forNotes.next());
-        }
-		
-		forNotes.close();
-	
-		Issue i = new Issue(id, state, type, summary, owner, confirmed, resolution, notesArray);
-		return i;
-		*/
 		String firstLine = line.substring(0, line.indexOf("\r\n"));
 		Scanner scanner = new Scanner(firstLine);
 		scanner.useDelimiter(",");
