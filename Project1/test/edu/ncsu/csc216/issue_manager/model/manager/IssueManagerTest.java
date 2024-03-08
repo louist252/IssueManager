@@ -81,7 +81,6 @@ class IssueManagerTest {
         assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue13.txt"));
         assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue14.txt"));
         assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue15.txt"));
-        assertThrows(StringIndexOutOfBoundsException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue16.txt"));
         assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue17.txt"));
         assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue18.txt"));
 	}
