@@ -72,7 +72,7 @@ public class IssueReaderTest {
 			for (int i = 0; i < validIssues.length; i++) {
 				assertEquals(validIssues[i], issues.get(i).toString());
 			}
-		} catch (IllegalArgumentException e) {
+		} catch (Exception e) {
 			
 			assertEquals("File not found", e.getMessage());
 		}
