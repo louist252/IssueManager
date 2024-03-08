@@ -5,7 +5,7 @@ package edu.ncsu.csc216.issue_manager.model.io;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 
@@ -72,8 +72,8 @@ public class IssueReaderTest {
 			for (int i = 0; i < validIssues.length; i++) {
 				assertEquals(validIssues[i], issues.get(i).toString());
 			}
-		
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
+			
 			assertEquals("File not found", e.getMessage());
 		}
 		

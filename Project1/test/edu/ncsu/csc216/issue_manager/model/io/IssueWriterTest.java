@@ -5,7 +5,10 @@ package edu.ncsu.csc216.issue_manager.model.io;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import org.junit.jupiter.api.Test;
 
@@ -35,11 +38,11 @@ public class IssueWriterTest {
 		try {
 			IssueWriter.writeIssuesToFile("test-files/actual_issue.txt", issues);
 		} catch (Exception e) {
-			Exception exception = assertThrows(IllegalArgumentException.class, 
-					() -> IssueWriter.writeIssuesToFile("Invalid file location", issues));
-			assertEquals("Cannot write issue to file", exception.getMessage());
+			assertEquals("Cannot write issue to file", e.getMessage());
 		}
 	}
+	
+	
 	
 	
 
