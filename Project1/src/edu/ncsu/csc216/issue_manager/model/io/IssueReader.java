@@ -22,7 +22,7 @@ public class IssueReader {
 	 * Read issue from a file
 	 * @param filename the file to read
 	 * @return an array of Issues
-	 * @throws FileNotFoundException if the file is not found
+	 * @throws IllegalArgumentException if the file is not found
 	 */
 	public static ArrayList<Issue> readIssuesFromFile(String filename) {
 		ArrayList<Issue> issueList = new ArrayList<Issue>();

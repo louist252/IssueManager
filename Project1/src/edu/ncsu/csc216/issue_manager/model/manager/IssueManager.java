@@ -54,10 +54,14 @@ public class IssueManager {
 	/**
 	 * Loads issues from a file
 	 * @param filename name of the file
+	 * @throws IllegalArgumentException if any error occur
 	 */
 	public void loadIssuesFromFile(String filename) {
-		issueList.addIssues(IssueReader.readIssuesFromFile(filename));
-		
+		try {
+			issueList.addIssues(IssueReader.readIssuesFromFile(filename));
+		} catch (Exception e) {
+			throw new IllegalArgumentException();
+		}
 	}
 	
 	/**
