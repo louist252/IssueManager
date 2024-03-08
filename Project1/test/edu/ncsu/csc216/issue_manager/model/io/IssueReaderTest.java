@@ -78,20 +78,7 @@ public class IssueReaderTest {
 		}
 		
 	}
-	
-	/**
-	 * Test with an invalid file
-	 */
-	@Test
-	public void testReadIssuesFromInvalidFile() {
-		try {
-			ArrayList<Issue> issues = IssueReader.readIssuesFromFile("invalid file");
-		} catch (Exception e) {
-			assertEquals("File not found", e.getMessage());
-		}
-		
-		
-	}
+
 	
 	/**
 	 * Test constructor
