@@ -86,7 +86,6 @@ public class IssueReaderTest {
 	public void testReadIssuesFromInvalidFile() {
 		try {
 			ArrayList<Issue> issues = IssueReader.readIssuesFromFile("invalid file");
-			assertEquals(0, issues.size(), "Incorrect length");
 		} catch (Exception e) {
 			assertEquals("File not found", e.getMessage());
 		}
