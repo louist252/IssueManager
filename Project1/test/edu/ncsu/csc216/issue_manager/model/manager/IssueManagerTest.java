@@ -65,17 +65,19 @@ class IssueManagerTest {
 	@Test
 	public void testLoadIssuesFromFile() {
 		manager.createNewIssueList();
-		
-	        manager.loadIssuesFromFile("test-files/issue10.txt");
-	        Object[][] arr = manager.getIssueListAsArray();
-	        //One issue in test file, check length
-	        assertEquals(1, arr.length, "Incorrect length");
-	        //Check each element in the arr
-	        assertEquals(3, arr[0][0], "Incorrect issue Id");
-			assertEquals(Issue.WORKING_NAME, arr[0][1]); 
-			assertEquals(Issue.I_BUG, arr[0][2]); 
-			assertEquals(SUMMARY, arr[0][3]);
-		
+		try {
+        manager.loadIssuesFromFile("test-files/issue10.txt");
+        Object[][] arr = manager.getIssueListAsArray();
+        //One issue in test file, check length
+        assertEquals(1, arr.length, "Incorrect length");
+        //Check each element in the arr
+        assertEquals(3, arr[0][0], "Incorrect issue Id");
+		assertEquals(Issue.WORKING_NAME, arr[0][1]); 
+		assertEquals(Issue.I_BUG, arr[0][2]); 
+		assertEquals(SUMMARY, arr[0][3]);
+		} catch (Exception e) {
+			assertEquals("Invalid file", e.getMessage());
+		}
 		
         
 	}

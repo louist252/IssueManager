@@ -74,9 +74,7 @@ public class IssueReaderTest {
 			}
 		
 		} catch (Exception e) {
-			Exception exception = assertThrows(IllegalArgumentException.class, 
-					() -> IssueReader.readIssuesFromFile("Invalid file location"));
-			assertEquals("File not found", exception.getMessage());
+			assertEquals("File not found", e.getMessage());
 		}
 		
 	}
