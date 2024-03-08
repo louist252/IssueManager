@@ -73,7 +73,7 @@ public class IssueReaderTest {
 				assertEquals(validIssues[i], issues.get(i).toString());
 			}
 		} catch (Exception e) {
-			
+			//Do nothing here
 		}
 		
 	}
