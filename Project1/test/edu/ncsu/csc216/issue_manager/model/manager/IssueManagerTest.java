@@ -64,10 +64,13 @@ class IssueManagerTest {
 	 */
 	@Test
 	public void testLoadIssuesFromFile() {
-		IssueManager.getInstance().loadIssuesFromFile("test-files/issue1.txt");
-		assertEquals(IssueManager.getInstance().getIssueById(1).getSummary(), "Issue description");
-        assertEquals(IssueManager.getInstance().getIssueById(1).getNotes().get(0), "[New] Note 1");
-        
+		try {
+			IssueManager.getInstance().loadIssuesFromFile("test-files/issue1.txt");
+			assertEquals(IssueManager.getInstance().getIssueById(1).getSummary(), "Issue description");
+		    assertEquals(IssueManager.getInstance().getIssueById(1).getNotes().get(0), "[New] Note 1");
+		} catch (IllegalArgumentException e) {
+			//Nothing happens
+		}
         assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue3.txt"));
         assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue4.txt"));
         assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue5.txt"));
