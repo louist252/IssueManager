@@ -154,8 +154,8 @@ class IssueListTest {
 		ArrayList<String> notes = new ArrayList<String>();
 		notes.add("[New] Note 1");
 		notes.add("[Confirmed] Note 2");
-		Issue i1 = new Issue(12, Issue.NEW_NAME, Issue.I_ENHANCEMENT, SUMMARY, "", true, Command.R_DUPLICATE, notes);
-		Issue i2 = new Issue(30, Issue.WORKING_NAME, Issue.I_ENHANCEMENT, SUMMARY, "Onwer 2", true, Command.R_DUPLICATE, notes);
+		Issue i1 = new Issue(12, Issue.NEW_NAME, Issue.I_ENHANCEMENT, SUMMARY, "", false, Command.R_DUPLICATE, notes);
+		Issue i2 = new Issue(30, Issue.WORKING_NAME, Issue.I_BUG, SUMMARY, "Onwer 2", true, Command.R_DUPLICATE, notes);
 		ArrayList<Issue> issuesTest = new ArrayList<Issue>();
 		issuesTest.add(i1);
 		issuesTest.add(i2);

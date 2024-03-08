@@ -64,22 +64,26 @@ class IssueManagerTest {
 	 */
 	@Test
 	public void testLoadIssuesFromFile() {
-		manager.createNewIssueList();
-		try {
-        manager.loadIssuesFromFile("test-files/issue10.txt");
-        Object[][] arr = manager.getIssueListAsArray();
-        //One issue in test file, check length
-        assertEquals(1, arr.length, "Incorrect length");
-        //Check each element in the arr
-        assertEquals(3, arr[0][0], "Incorrect issue Id");
-		assertEquals(Issue.WORKING_NAME, arr[0][1]); 
-		assertEquals(Issue.I_BUG, arr[0][2]); 
-		assertEquals(SUMMARY, arr[0][3]);
-		} catch (Exception e) {
-			assertEquals("Invalid file", e.getMessage());
-		}
-		
+		IssueManager.getInstance().loadIssuesFromFile("test-files/issue1.txt");
+		assertEquals(IssueManager.getInstance().getIssueById(1).getSummary(), "Issue description");
+        assertEquals(IssueManager.getInstance().getIssueById(1).getNotes().get(0), "[New] Note 1");
         
+        assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue3.txt"));
+        assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue4.txt"));
+        assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue5.txt"));
+        assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue6.txt"));
+        assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue7.txt"));
+        assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue8.txt"));
+        assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue9.txt"));
+        assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue10.txt"));
+        assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue11.txt"));
+        assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue12.txt"));
+        assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue13.txt"));
+        assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue14.txt"));
+        assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue15.txt"));
+        assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue16.txt"));
+        assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue17.txt"));
+        assertThrows(IllegalArgumentException.class, () -> IssueManager.getInstance().loadIssuesFromFile("test-files/issue18.txt"));
 	}
 	
 	

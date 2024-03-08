@@ -56,11 +56,8 @@ public class IssueManager {
 	 * @param filename name of the file
 	 */
 	public void loadIssuesFromFile(String filename) {
-		try {
-			issueList.addIssues(IssueReader.readIssuesFromFile(filename));
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Invalid file");
-		}
+		issueList.addIssues(IssueReader.readIssuesFromFile(filename));
+		
 	}
 	
 	/**

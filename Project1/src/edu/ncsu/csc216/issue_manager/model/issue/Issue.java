@@ -101,6 +101,9 @@ public class Issue {
 		if (id < 1) {
 			throw new IllegalArgumentException("Issue cannot be created.");
 		}
+		if (note == null || note.length() == 0) {
+			throw new IllegalArgumentException("Issue cannot be created.");
+		}
 		setIssueId(id);
 		setSummary(summary);
 		setState(Issue.NEW_NAME);
@@ -130,7 +133,40 @@ public class Issue {
 	 */
 	public Issue(int id, String state, String issueType, String summary, String owner, 
 			boolean confirmed, String resolution, ArrayList<String> notes) {
-		
+		if (state == null || state.length() == 0) {
+			throw new IllegalArgumentException("Issue cannot be created.");
+		} 
+		if (issueType == null || issueType.length() == 0 ) {
+			throw new IllegalArgumentException("Issue cannot be created.");
+		}
+		if (notes == null || notes.size() == 0) {
+			throw new IllegalArgumentException("Issue cannot be created.");
+		}
+		if(!"".equals(resolution) && state.equals(Issue.CONFIRMED_NAME)) {
+			throw new IllegalArgumentException("Issue cannot be created.");
+		}
+		if(issueType.equals(Issue.I_ENHANCEMENT) && state.equals(Issue.CONFIRMED_NAME)) {
+			throw new IllegalArgumentException("Issue cannot be created");
+		}
+		if((state.equals(Issue.WORKING_NAME) || state.equals(Issue.VERIFYING_NAME)) && 
+				(owner == null || owner.length() == 0)) {
+			throw new IllegalArgumentException("Issue cannot be created");
+		}
+		if(state.equals(Issue.WORKING_NAME) && !confirmed) {
+			throw new IllegalArgumentException("Issue cannot be created");
+		}
+		if(state.equals(Issue.VERIFYING_NAME) && !resolution.equals(Command.R_FIXED)) {
+			throw new IllegalArgumentException("Issue cannot be created");
+		}
+		if(state.equals(Issue.CLOSED_NAME) && resolution.length() == 0) {
+			throw new IllegalArgumentException("Issue cannot be created");
+		}
+		if(issueType.equals(Issue.I_ENHANCEMENT) && confirmed) {
+			throw new IllegalArgumentException("Issue cannot be created");
+		}
+		if(issueType.equals(Issue.I_ENHANCEMENT) && resolution.equals(Command.R_WORKSFORME)) {
+			throw new IllegalArgumentException("Issue cannot be created");
+		}
 		
 		setIssueId(id);
 		setState(state);
@@ -161,29 +197,30 @@ public class Issue {
 	 * @throws IllegalArgumentException if issueState is null or empty
 	 */
 	private void setState(String issueState) {
-		if (issueState == null || issueState.length() == 0 ) {
-			throw new IllegalArgumentException("Issue cannot be created.");
-		}
+		
 		
 		switch(issueState) {
-		case NEW_NAME:
-			state = newState;
-			break;
-		case WORKING_NAME:
-			state = workingState;
-			break;
-		case CONFIRMED_NAME:
-			state = confirmedState;
-			break;
-		case VERIFYING_NAME:
-			state = verifyingState;
-			break;
-		case CLOSED_NAME:
-			state = closedState;
-			break;
-		default:
-			break;
+			case NEW_NAME:
+				state = newState;
+				break;
+			case WORKING_NAME:
+				state = workingState;
+				break;
+			case CONFIRMED_NAME:
+				state = confirmedState;	
+				break;
+			case VERIFYING_NAME:
+				state = verifyingState;
+				break;
+			case CLOSED_NAME:
+				state = closedState;
+				break;
+			default:
+				throw new IllegalArgumentException("Issue cannot be created.");
+			
 		}
+		
+		
 	}
 	
 	/**
@@ -192,9 +229,6 @@ public class Issue {
 	 * @throws IllegalArgumentException if type is null or empty
 	 */
 	private void setIssueType (String type) {
-		if (type == null || type.length() == 0 ) {
-			throw new IllegalArgumentException("Issue cannot be created.");
-		}
 		switch (type) {
 		case I_ENHANCEMENT:
 			issueType = IssueType.ENHANCEMENT;
@@ -251,6 +285,7 @@ public class Issue {
 		if (r == null) {
 			throw new IllegalArgumentException("Issue cannot be created.");
 		}
+		
 		switch(r) {
 		case Command.R_FIXED:
 			resolution = Resolution.FIXED;
@@ -269,19 +304,6 @@ public class Issue {
 			break;
 		}
 		
-		/*
-		if (r == Command.R_FIXED) {
-			resolution = Resolution.FIXED;
-		} else if (r == Command.R_DUPLICATE) {
-			resolution = Resolution.DUPLICATE;
-		} else if (r == Command.R_WONTFIX) {
-			resolution = Resolution.WONTFIX;
-		} else if (r == Command.R_WORKSFORME) {
-			resolution = Resolution.WORKSFORME;
-		} else if (r == null || r.length() == 0) {
-			resolution = null;
-		}
-		*/
 		
 	}
 
@@ -428,9 +450,6 @@ public class Issue {
 	 * @throws IllegalArgumentException if note is null or empty
 	 */
 	private void addNote(String note) {
-		if (note == null) {
-			throw new IllegalArgumentException("Invalid information.");
-		}
 		String noteWithState = "[" + getStateName() + "] " + note;
 		notes.add(noteWithState); 
 	}
@@ -544,7 +563,7 @@ public class Issue {
 		public void updateState(Command command) {
 			switch(command.getCommand()) {
 			case VERIFY:
-				if (resolution == Command.Resolution.FIXED) {
+				if (command.getResolution() == Command.Resolution.FIXED) {
 					setState(CLOSED_NAME);
 				} else {
 					throw new UnsupportedOperationException("Invalid information.");
@@ -634,8 +653,8 @@ public class Issue {
 				break;
 			case BUG:
 				if (command.getCommand() == Command.CommandValue.CONFIRM) {
-					setState(CONFIRMED_NAME);
 					setConfirmed(true);
+					setState(CONFIRMED_NAME);
 				} else if (command.getCommand() == Command.CommandValue.RESOLVE){
 					resolution = command.getResolution();
 					setState(CLOSED_NAME);

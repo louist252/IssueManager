@@ -80,6 +80,7 @@ public class Command {
 		if (note == null || note.length() == 0) {
 			throw new IllegalArgumentException("Invalid information.");
 		}
+		
 		this.ownerId = ownerId;
 		this.note = note;
 		this.c = c;

@@ -35,7 +35,7 @@ public class IssueReader {
 				while(scan.hasNext()) {
 					String issueString = scan.next();
 					Issue issue = processIssue(issueString);
-					issueList.add(issue);	
+					issueList.add(issue);
 				}
 			
 				scan.close();
@@ -53,37 +53,45 @@ public class IssueReader {
 	 * @return an issue
 	 */
 	private static Issue processIssue(String line) {
-		
-		String firstLine = line.substring(0, line.indexOf("\r\n"));
-		Scanner scanner = new Scanner(firstLine);
-		scanner.useDelimiter(",");
-		int id = scanner.nextInt();
-		String state = scanner.next();
-		String type = scanner.next();
-		String summary =  scanner.next();
-		String owner = scanner.next();
-		boolean confirmed = scanner.nextBoolean();
-		String resolution = "";
-		
-		
-		while (scanner.hasNext()) {
-			resolution = scanner.next();
+		Issue i;
+		try {
+			String firstLine = line.substring(0, line.indexOf("\r\n"));
+			Scanner scanner = new Scanner(firstLine);
+			scanner.useDelimiter(",");
+			int id = scanner.nextInt();
+			String state = scanner.next();
+			String type = scanner.next();
+			String summary =  scanner.next();
+			String owner = scanner.next();
+			boolean confirmed = scanner.nextBoolean();
+			String resolution = "";
+			
+			
+			while (scanner.hasNext()) {
+				resolution = scanner.next();
+			}
+			scanner.close();
+			
+			String notes = line.substring(line.indexOf("\n") + 2);
+			if (notes.length() == 0) {
+				throw new IllegalArgumentException("Issue cannot be created.");
+			}
+			Scanner forNotes = new Scanner(notes);
+			forNotes.useDelimiter("\r?\n?[-]");
+			
+			ArrayList<String> notesArray = new ArrayList<String>();
+			
+			
+			while (forNotes.hasNext()) {
+	            notesArray.add(forNotes.next());
+	        }
+			
+			forNotes.close();
+			
+			i = new Issue(id, state, type, summary, owner, confirmed, resolution, notesArray);
+		} catch (Exception e) {
+			throw new IllegalArgumentException();
 		}
-		
-		
-		String notes = line.substring(line.indexOf("\n") + 2);
-		Scanner forNotes = new Scanner(notes);
-		forNotes.useDelimiter("\r?\n?[-]");
-		
-		ArrayList<String> notesArray = new ArrayList<String>();
-		
-		while (forNotes.hasNext()) {
-            notesArray.add(forNotes.next());
-        }
-		
-		forNotes.close();
-		scanner.close();
-		Issue i = new Issue(id, state, type, summary, owner, confirmed, resolution, notesArray);
 		return i;
 	
 	
