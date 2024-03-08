@@ -73,9 +73,7 @@ public class IssueReader {
 			scanner.close();
 			
 			String notes = line.substring(line.indexOf("\n") + 2);
-			if (notes.length() == 0) {
-				throw new IllegalArgumentException("Issue cannot be created.");
-			}
+			
 			Scanner forNotes = new Scanner(notes);
 			forNotes.useDelimiter("\r?\n?[-]");
 			
