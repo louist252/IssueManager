@@ -34,8 +34,12 @@ public class IssueReader {
 				scan.useDelimiter("\\r?\\n?[*]");
 				while(scan.hasNext()) {
 					String issueString = scan.next();
+					try {
 					Issue issue = processIssue(issueString);
 					issueList.add(issue);
+					} catch (IllegalArgumentException e) {
+						throw new IllegalArgumentException();
+					}
 				}
 			
 				scan.close();
@@ -54,7 +58,7 @@ public class IssueReader {
 	 */
 	private static Issue processIssue(String line) {
 		Issue i;
-		try {
+		
 			String firstLine = line.substring(0, line.indexOf("\r\n"));
 			Scanner scanner = new Scanner(firstLine);
 			scanner.useDelimiter(",");
@@ -87,10 +91,8 @@ public class IssueReader {
 			forNotes.close();
 			
 			i = new Issue(id, state, type, summary, owner, confirmed, resolution, notesArray);
-		} catch (Exception e) {
-			throw new IllegalArgumentException();
-		}
-		return i;
+		
+			return i;
 	
 	
 	}
