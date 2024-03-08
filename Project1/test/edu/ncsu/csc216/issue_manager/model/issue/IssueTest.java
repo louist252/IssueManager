@@ -598,37 +598,37 @@ public class IssueTest {
 			notes.remove(notes.size() - 1);
 			
 			//Test when command has Reopen CommandValue, issue has type Bug, is confirmed, and has an owner
-			Issue i3 = new Issue(ID, Issue.CLOSED_NAME, Issue.I_BUG, SUMMARY, "Owner name", true, Command.R_FIXED, notes);
+			Issue i3 = new Issue(ID, Issue.CLOSED_NAME, Issue.I_BUG, SUMMARY, "Owner name", false, Command.R_FIXED, notes);
 			Command c3 = new Command (Command.CommandValue.REOPEN, OWNER, Command.Resolution.FIXED, NOTE);
 			i3.update(c3);
-			assertEquals(Issue.WORKING_NAME, i3.getStateName(), "Incorrect state");
+			assertEquals(Issue.NEW_NAME, i3.getStateName(), "Incorrect state");
 			assertEquals("-[New] Note 1\r\n"
 					+ "-[Confirmed] Note 2\r\n"
-					+ "-[Working] notes", i3.getNotesString(), "Incorrect notes");
+					+ "-[New] notes", i3.getNotesString(), "Incorrect notes");
 			
 			notes.remove(notes.size() - 1);
 			
 			//Test when command has Reopen CommandValue, issue has type Bug, is confirmed, and has no owner
-			Issue i4 = new Issue(ID, Issue.CLOSED_NAME, Issue.I_BUG, SUMMARY, "", true, Command.R_FIXED, notes);
+			Issue i4 = new Issue(ID, Issue.CLOSED_NAME, Issue.I_ENHANCEMENT, SUMMARY, "", false, Command.R_FIXED, notes);
 			Command c4 = new Command (Command.CommandValue.REOPEN, OWNER, Command.Resolution.FIXED, NOTE);
 			i4.update(c4);
-			assertEquals(Issue.CONFIRMED_NAME, i4.getStateName(), "Incorrect state");
+			assertEquals(Issue.NEW_NAME, i4.getStateName(), "Incorrect state");
 			assertEquals(OWNER, i4.getOwner(), "Incorrect state");
 			assertEquals("-[New] Note 1\r\n"
 					+ "-[Confirmed] Note 2\r\n"
-					+ "-[Confirmed] notes", i4.getNotesString(), "Incorrect notes");
+					+ "-[New] notes", i4.getNotesString(), "Incorrect notes");
 			
 			notes.remove(notes.size() - 1);
 			
 			//Test when command has Reopen CommandValue, issue has type Bug, and is not confirmed, and has no owner
-			Issue i5 = new Issue(ID, Issue.CLOSED_NAME, Issue.I_BUG, SUMMARY, "", false, Command.R_FIXED, notes);
+			Issue i5 = new Issue(ID, Issue.CLOSED_NAME, Issue.I_ENHANCEMENT, SUMMARY, OWNER, false, Command.R_FIXED, notes);
 			Command c5 = new Command (Command.CommandValue.REOPEN, OWNER, Command.Resolution.FIXED, NOTE);
 			i5.update(c5);
-			assertEquals(Issue.NEW_NAME, i5.getStateName(), "Incorrect state");
+			assertEquals(Issue.WORKING_NAME, i5.getStateName(), "Incorrect state");
 			assertEquals(OWNER, i5.getOwner(), "Incorrect state");
 			assertEquals("-[New] Note 1\r\n"
 					+ "-[Confirmed] Note 2\r\n"
-					+ "-[New] notes", i5.getNotesString(), "Incorrect notes");
+					+ "-[Working] notes", i5.getNotesString(), "Incorrect notes");
 			
 			//Test when command has CommandValue that is not Reopen
 			Issue i6 = new Issue(ID, Issue.CLOSED_NAME, Issue.I_BUG, SUMMARY, "", false, Command.R_FIXED, notes);
